@@ -1,0 +1,387 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>JavaScript Checker- Design by VinhNoName</title>
+<meta name="Content-Type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8" />
+<script type="text/javascript" id="libscrv" src=""></script>
+<script type="text/javascript" src="jquery.min.js"></script>
+
+<style>body{background-color: seashell;color: black;font-family: 'Patua One', serif;margin: 0;padding: 0;}fieldset{background-color: gainsboro;border: 0;clear: both;margin-bottom: 1em;margin-left: 3%;margin-right: 3%;margin-top: 1em;padding: 0;width: auto;}legend{background-color: darkslategray;border: 0;color: white;font-size: 100%;font-style: normal;font-weight: normal;margin: 0;padding-bottom: 0.25em;padding-left: 0;padding-right: 0;padding-top: 0.25em;text-align: center;width: 100%;}textarea::selection{background-color: yellow;color: black;}textarea{background-color: white;color: black;font-family: monospace;border: 0;font-size: 90%;margin: 2%;overflow: auto;padding-left: 0.5em;white-space: pre;width: 95%;height: 95%;}.input{min-width: fill-available;white-space: normal;}input[type=button]{background-color: darkslategray;border: 0;color: white;cursor: pointer;font-family: 'Patua One', serif;font-size: 100%;font-style: normal;margin-left: 1em;margin-right: 1em;padding-left: 1em;padding-right: 1em;text-align: center;}input[type=button]:hover{background-color: slategray;color: white;border: 0;}input[type=button]:active{border: 0;color: black;}input[type=button]:disabled{background-color: gray;border: 0;color: gainsboro;}</style>
+</head>
+<body>
+<div id="addhtvij">
+<!-- HTML CODE HERE -->
+
+
+
+</div><script id="addjsvij" type="text/javascript">
+//JAVASCRIPT CODE HERE
+
+
+
+
+</script>
+
+<script type="text/javascript">
+function Alert(s){alert(s)};
+String.prototype.a=function a(s){alert(s)};
+function libscrv(){
+var libscrvsrc=document.getElementById("libscrvsrc").value;
+
+var htm=document.getElementById("addhtvij").innerHTML;
+var rg=new RegExp('\\<scr'+'ipt\\s*src\\=\\"'+libscrvsrc+'\\"\\>\\<\\/script.*?\\>', "ig");
+
+htm=htm.replace(rg,'');
+htm='<scr'+'ipt src="'+libscrvsrc+'"></scr'+'ipt>'+htm;
+document.getElementById("addhtvij").innerHTML=htm;
+(function(d, s, src){
+
+    var js, fjs = d.getElementsByTagName(s)[0];
+    js = d.createElement(s);
+    js.src = src;
+
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', libscrvsrc));
+alert("Đã thêm thư viện!");
+
+}
+</script>
+<script type="text/javascript">
+var indirect=function(data){
+
+if(data && trim(data)){
+// We use execScript on Internet Explorer
+
+// We use an anonymous function so that context is window
+// rather than jQuery in Firefox
+(window.execScript || function(data){
+window["eval"].call(window, data);
+})(data);
+
+}}
+
+function globalEvalScript(code){
+var script;
+code=trim(code);
+if(code){
+// If the code includes a valid, prologue position
+// strict mode pragma, execute code by injecting a
+
+
+// script tag into the document.
+if(code.indexOf("use strict") === 1){
+script=document.createElement("script");
+script.text=code;
+document.head.appendChild(script).parentNode.removeChild(script);
+}else{
+// Otherwise, avoid the DOM node creation, insertion
+
+// and removal by using an indirect global eval
+indirect(code);
+}}}
+function checksscr(){
+var rga=new RegExp("\\<scr"+"ipt.*?\\>","gi");
+var rg=new RegExp("\\<\\/script.*?\\>", "ig");
+
+var addjsvij=document.getElementById("addjsvij").innerHTML;
+
+var vsctck=document.getElementById("addhtvij").innerHTML;
+var svc=document.getElementById("vsctck").value;
+if((svc.split(rga)).length!=(svc.split(rg)).length)
+alert("Lỗi: số thẻ <scr"+"ipt> và </scr"+"ipt> không bằng nhau!");
+if(svc.match(rg)) vsctck+=svc; else vsctck+='<scr'+'ipt>'+svc+'</scr'+'ipt>';
+
+var sc,vsctckript=addjsvij;
+var scr=vsctck.split(rg);
+
+if(scr.length == 1) vsctckript+="\n"+vsctck;
+for(sc in scr){
+sc=scr[sc].split(rga);
+if(sc[1] != undefined) vsctckript+="\n"+sc[1];
+
+}
+
+//vsctckript=vsctckript.replace(/document.write(ln)?/ig, 'document.getElementById("outputtsbv").innerHTML+="<br>"+');
+
+if(!(document.chkfrv.htmlchangescrptnch.checked)){
+if(document.chkfrv.sout.checked){
+document.getElementById("outputtsbv").innerHTML=vsctck;
+
+document.getElementById("outputtsbvhd").innerHTML="";
+}else{
+document.getElementById("outputtsbv").innerHTML="";
+document.getElementById("outputtsbvhd").innerHTML=vsctck;
+
+}}
+try{
+
+globalEvalScript(vsctckript);
+}catch(e){
+alert("LỖI: "+e);
+}
+if(document.chkfrv.vcpyintar.checked){
+
+if(document.chkfrv.sjs.checked) document.getElementById("jstsbv").innerHTML="<textarea onfocus=\"this.select();\">"+trim(htmlspecialchars(vsctckript))+"</textarea>";
+
+else document.getElementById("jstsbv").innerHTML="";
+if(document.chkfrv.sht.checked) document.getElementById("htmltsbv").innerHTML="<textarea onfocus=\"this.select();\">"+trim(htmlspecialchars(vsctck))+"</textarea>";
+else document.getElementById("htmltsbv").innerHTML="";
+}else{
+var i=0;
+var cod="<br><span style=\"color:green\">"+i.toString()+": </span>"+htmlspecialchars(vsctckript).replace(/\n/ig, function(){
+
+
+i++;
+return "<br><span style=\"color:green\">"+i.toString()+": </span>";
+});
+if(document.chkfrv.sjs.checked) document.getElementById("jstsbv").innerHTML="<div style=\"color:red\">"+cod+"</div>";
+else document.getElementById("jstsbv").innerHTML="";
+if(document.chkfrv.sht.checked) document.getElementById("htmltsbv").innerHTML="<div style=\"color:red\">"+htmlspecialchars(vsctck).replace(/\n/ig, '<br>')+"</div>";
+else document.getElementById("htmltsbv").innerHTML="";
+
+}
+
+}
+function chekckbxv(){
+try{
+var sout=document.chkfrv.sout.checked;
+
+var sjs=document.chkfrv.sjs.checked;
+
+var sht=document.chkfrv.sht.checked;
+if(!sout){
+document.getElementById("outputtsbvhd").innerHTML=document.getElementById("outputtsbv").innerHTML;
+document.getElementById("outputtsbv").innerHTML="";
+}else{
+
+document.getElementById("outputtsbv").innerHTML=document.getElementById("outputtsbvhd").innerHTML;
+document.getElementById("outputtsbvhd").innerHTML="";
+
+}
+if(!sjs) document.getElementById("jstsbv").innerHTML="";
+if(!sht) document.getElementById("htmltsbv").innerHTML="";
+}catch(e){
+
+alert(e);
+}
+}
+
+function trim(str, charlist) {
+  var whitespace, l = 0,
+    i = 0;
+
+  str += '';
+
+  if (!charlist) {
+    // default list
+
+    whitespace =
+      ' \n\r\t\f\x0b\xa0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000';
+
+  } else {
+    // preg_quote custom list
+    charlist += '';
+    whitespace = charlist.replace(/([\[\]\(\)\.\?\/\*\{\}\+\$\^\:])/g, '$1');
+  }
+
+  l = str.length;
+
+  for (i = 0; i < l; i++) {
+    if (whitespace.indexOf(str.charAt(i)) === -1) {
+      str = str.substring(i);
+      break;
+    }
+
+  }
+
+  l = str.length;
+  for (i = l - 1; i >= 0; i--) {
+    if (whitespace.indexOf(str.charAt(i)) === -1) {
+      str = str.substring(0, i + 1);
+      break;
+
+
+    }
+  }
+
+  return whitespace.indexOf(str.charAt(0)) === -1 ? str : '';
+}
+function htmlspecialchars(string, quote_style, charset, double_encode) {
+  var optTemp = 0,
+
+    i = 0,
+    noquotes = false;
+  if (typeof quote_style === 'undefined' || quote_style === null) {
+    quote_style = 2;
+  }
+  string = string.toString();
+
+  if (double_encode !== false) {
+
+    // Put this first to avoid double-encoding
+    string = string.replace(/&/g, '&amp;');
+  }
+  string = string.replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  var OPTS = {
+
+    'ENT_NOQUOTES': 0,
+    'ENT_HTML_QUOTE_SINGLE': 1,
+    'ENT_HTML_QUOTE_DOUBLE': 2,
+    'ENT_COMPAT': 2,
+
+    'ENT_QUOTES': 3,
+    'ENT_IGNORE': 4
+  };
+
+  if (quote_style === 0) {
+    noquotes = true;
+  }
+
+  if (typeof quote_style !== 'number') {
+    // Allow for a single string or an array of string flags
+    quote_style = [].concat(quote_style);
+    for (i = 0; i < quote_style.length; i++) {
+
+      // Resolve string input to bitwise e.g. 'ENT_IGNORE' becomes 4
+      if (OPTS[quote_style[i]] === 0) {
+
+        noquotes = true;
+      } else if (OPTS[quote_style[i]]) {
+        optTemp = optTemp | OPTS[quote_style[i]];
+      }
+    }
+
+    quote_style = optTemp;
+
+  }
+  if (quote_style & OPTS.ENT_HTML_QUOTE_SINGLE) {
+    string = string.replace(/'/g, '&#039;');
+  }
+  if (!noquotes) {
+    string = string.replace(/"/g, '&quot;');
+
+
+  }
+
+  return string;
+}
+function trim(str, charlist) {
+  //  discuss at: http://phpjs.org/functions/trim/
+  // original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+
+  // improved by: mdsjack (http://www.mdsjack.bo.it)
+  // improved by: Alexander Ermolaev (http://snippets.dzone.com/user/AlexanderErmolaev)
+  // improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  // improved by: Steven Levithan (http://blog.stevenlevithan.com)
+  // improved by: Jack
+  //    input by: Erkekjetter
+
+  //    input by: DxGx
+
+  // bugfixed by: Onno Marsman
+  //   example 1: trim('    Kevin van Zonneveld    ');
+  //   returns 1: 'Kevin van Zonneveld'
+  //   example 2: trim('Hello World', 'Hdle');
+  //   returns 2: 'o Wor'
+
+  //   example 3: trim(16, 1);
+  //   returns 3: 6
+
+  var whitespace, l = 0,
+    i = 0;
+  str += '';
+
+
+  if (!charlist) {
+    // default list
+
+    whitespace =
+      ' \n\r\t\f\x0b\xa0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u200b\u2028\u2029\u3000';
+  } else {
+    // preg_quote custom list
+
+    charlist += '';
+    whitespace = charlist.replace(/([\[\]\(\)\.\?\/\*\{\}\+\$\^\:])/g, '$1');
+  }
+
+  l = str.length;
+  for (i = 0; i < l; i++) {
+    if (whitespace.indexOf(str.charAt(i)) === -1) {
+
+      str = str.substring(i);
+      break;
+    }
+
+  }
+
+  l = str.length;
+
+  for (i = l - 1; i >= 0; i--) {
+    if (whitespace.indexOf(str.charAt(i)) === -1) {
+      str = str.substring(0, i + 1);
+      break;
+
+    }
+  }
+
+  return whitespace.indexOf(str.charAt(0)) === -1 ? str : '';
+}
+</script>
+<form onsubmit="return false;" name="chkfrv">
+
+<div>Sử dụng Thư viện</div>
+
+<input type="text" value="jquery.js" id="libscrvsrc"/>
+<br />
+<input type="submit" value="Sử dụng" onclick="libscrv();" />
+<br />
+  <input onclick="chekckbxv();" type="checkbox" name="sout" checked />  OutPut
+<br />
+
+
+  <input onclick="chekckbxv();" type="checkbox" name="sjs" />  Show javascript code
+<br />
+  <input onclick="chekckbxv();" type="checkbox" name="sht" />  Show html code
+<br />
+<input type="checkbox" name="vcpyintar"/>  Copy code in textarea
+<br>
+<div>Nhập mã JavaScript</div>
+
+<textarea id="vsctck" style="width:690px; height: 400px">
+<script>
+s=v=''
+for(i=4000;i<=5000;i+=3){
+v=unescape('%u'+('000'+i).substr(-4));
+v+=unescape('%u'+('000'+(i+1)).substr(-4));
+
+v+=unescape('%u'+('000'+(i+2)).substr(-4));
+
+if(prompt('',v)=='v') break;
+}
+</script>
+</textarea>
+<br />
+
+<input type="submit" value="Kiểm tra" onclick="checksscr();" />
+<br />
+
+<input type="checkbox" name="htmlchangescrptnch" />  Not change html
+</form>
+<div>Output: </div>
+<div id="outputtsbv"></div>
+
+<br />
+Mã JavaScript:
+<div id="jstsbv"></div>
+
+<br />
+Mã HTML:
+<div id="htmltsbv"></div>
+
+<div align="center"><b>Designed By VinhNoName</b></div>
+<div id="outputtsbvhd" style="display: none"></div>
+</body>
+</html>
