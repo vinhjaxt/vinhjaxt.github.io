@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Giải hệ phương trình tuyến tính</title>
+	<style>
+span[id^="eq-"] {
+	cursor: pointer;
+}
+html{
+	font-size: 19px;
+}
+body {
+    font-size: 19px;
+    color: #333;
+}
+.container {
+	width: 80%;
+	border-color: #e7e7e7;
+	border-left-color: #ce4844 !important;
+	padding: 20px;
+	margin: 20px 0;
+	border: 1px solid #eee;
+	border-left-width: 5px;
+	border-radius: 3px;
+	overflow: visible;
+	margin: 0 auto;
+	background-color: #ede6e6;
+}
+.btn-default {
+    color: #333;
+    background-color: #8bce63;;
+    border-color: #ccc;
+}
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+	color: #ff0505;
+}
+.button {
+	padding-top: 24px;
+	padding-left: 12px;
+}
+.wrap {
+	width: 100%;
+}
+#result {
+	padding-top: 24px;
+	padding-left: 12px;
+}
+	</style>
+	</head>
+	<body>
+	<div class="wrap">
+		<div class="container">
+		<h3>Giải hệ phương trình tuyến tính</h3>
+			<div id="equation-lists">
+				<!-- Loop manual -->
+				<div id="equation-1">
+				<nobr>
+					<span id="eq-1-a-1">a<sub>1,1</sub></span><span>x<sub>1</sub></span> + <span id="eq-1-a-2">a<sub>1,2</sub></span><span>x<sub>2</sub></span> + <span id="eq-1-a-3">a<sub>1,3</sub></span><span>x<sub>3</sub></span> =  <span id="eq-1-b">b<sub>1</sub></span>
+				</nobr>
+				</div>
+				<!-- /end Loop manual-->
+			</div>
+			<div class="button">
+				<button id="btn-giaihe" class="btn btn-default">Giải HỆ</button>
+				<button onclick="resetHE();" class="btn btn-default">HỆ mới</button>
+			</div>
+			<div id="result"></div>
+		</div>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+	// Tìm số số 0 đứng ở đầu
+	function countZero(row){
+		if(!(row instanceof Array)){
+			return 0;
+		}
+		var count=0;
+		for(var i=0,l=row.length; i<l; i++){
+			if(parseFloat(row[i]) == 0 || Math.abs(parseFloat(row[i])) < 0.00000001)
+				count++;
+			else
+				break;
+		}
+		return count;
+	}
+	
+	// Sắp xếp ma trận theo hình thang
+	function sortMatrixRow(matrix){
+		if(!(matrix instanceof Array)) return false;
+		var rowsLength=matrix.length;
+		var zeros={},isOK=true,haveZero=[],numberZeroRows=0;
+		for(var i=0; i<rowsLength;i++){
+			var numberOfZeros=countZero(matrix[i]);
+			if(matrix[i].length==numberOfZeros) numberZeroRows++;
+			if(matrix[i].length!=numberOfZeros && haveZero.indexOf(numberOfZeros)!=-1) isOK=false;
+			haveZero.push(numberOfZeros);
+			zeros[matrix[i].join(',')]=numberOfZeros;
+		}
+		var resmatrix=[];
+		resmatrix=matrix.sort(function (a,b){
+			return zeros[a.join(',')] > zeros[b.join(',')];
+		});
+		return {
+			matrix: resmatrix,
+			isOK: isOK,
+			zeros: zeros,
+			numberZeroRows: numberZeroRows
+		};
+	}
+	function mulipleRow(row,mul){
+		if(!(row instanceof Array)) return false;
+		var resRow=[],times=parseFloat(mul)||1;
+		for(var i=0;i<row.length;i++){
+			resRow[i]=(parseFloat(row[i])||0)*times;
+		}
+		return resRow;
+	}
+	function subRow(row0,row1){
+		if(!(row0 instanceof Array) || !(row1 instanceof Array) || row0.length != row1.length) return false;
+		var resRow=[];
+		for(var i=0,l=row0.length;i<l;i++){
+			resRow[i]=row0[i]-row1[i];
+		}
+		return resRow;
+	}
+	// Tìm hạng của ma trận và trả về ma trận hình thang
+	function matrixRankCalculate(matrix){
+		if(!(matrix instanceof Array)) return false;
+		
+		// Tính số chiều và size của ma trận
+		var rowsLength=matrix.length,colsLength;
+		for(var i=0; i<rowsLength; i++){
+			if(matrix[i] && matrix[i] instanceof Array){
+				colsLength=matrix[i].length;
+				break;
+			}
+		}
+		var matrixDim=rowsLength*colsLength;
+		
+		var continueMatrix=Array.prototype.slice.apply(matrix);
+		
+		var cnt=0;
+		// Bắt đầu biến đổi sơ cấp
+		while(1){
+			cnt++;
+			if(cnt > 100){
+				console.log('Quá 100 lần biến đổi @@');
+				console.log(JSON.stringify(sortedMatrix));
+				break;
+			}
+			sortedMatrix=sortMatrixRow(continueMatrix);
+			if(sortedMatrix.isOK){
+				console.log(JSON.stringify(sortedMatrix));
+				break;
+			}
+			for(var i=0,l=sortedMatrix.matrix.length-1;i<l;i++){
+				var row0=sortedMatrix.matrix[i];
+				var row1=sortedMatrix.matrix[i+1];
+				var zero0=sortedMatrix.zeros[row0.join(',')];
+				var zero1=sortedMatrix.zeros[row1.join(',')];
+				if(zero0!=row0.length && zero0 == zero1){
+					for(var j=zero0,len=row0.length;j<len;j++){
+						switch(true){
+							case row0[j] - row1[j] > 0:
+								row1=mulipleRow(row1,row0[j]/row1[j]);
+								row1=subRow(row1,row0);
+								sortedMatrix.matrix[i+1]=row1;
+								break;
+							case row0[j] - row1[j] < 0:
+								row0=mulipleRow(row0,row1[j]/row0[j]);
+								row0=subRow(row0,row1);
+								sortedMatrix.matrix[i]=row0;
+								break;
+							default:
+								row1=subRow(row0,row1);
+								sortedMatrix.matrix[i+1]=row1;
+								break;
+						}
+						break;
+					}
+				}
+			}
+			continueMatrix=sortedMatrix.matrix;
+		}
+		return {
+			matrix: sortedMatrix.matrix,
+			dim: matrixDim,
+			rank: rowsLength-sortedMatrix.numberZeroRows,
+			numberZeroRows: sortedMatrix.numberZeroRows,
+			numberOfCols: colsLength,
+			numberOfRows: rowsLength
+		};
+	}
+	
+	// Giải phương trình
+	function giaiHPTTT(){
+		var numberOfVariables=NumberOfEquations*(NumberOfEquations+1);
+		if(Object.keys(VariablesData).length !== numberOfVariables){
+			alert('Bạn chưa nhập đủ.');
+			return;
+		}
+		var randA=matrixRankCalculate(MatrixA),randAadd=matrixRankCalculate(MatrixAadd);
+		switch(true){
+			case randA.rank < randAadd.rank:
+				// Hệ vô nghiệm
+				result.innerHTML='Hệ vô nghiệm';
+				break;
+			case randA.rank == randAadd.rank:
+				// Hệ có nghiệm
+				if(randA.rank == NumberOfEquations){
+					// Rank == Số ẩn => hệ có nghiệm duy nhất
+					var DSNghiem=showNo(randAadd);
+					result.innerHTML='<div class="title">Hệ có nghiệm duy nhất:</div><div>'+DSNghiem+'</div>';
+				}else{
+					// Hệ có nghiệm tham số
+					result.innerHTML='<div class="title">Hệ có nghiệm tham số, hãy tham số hóa:</div><div id="eqr"></div>';
+					showHPT(randAadd,'#eqr');
+				}
+				break;
+		}
+	}
+	
+	// Hiển thị nghiệm của hệ
+	function showNo(randAadd){
+		// Tìm nghiệm cụ thể
+		var No=new Array(randAadd.rank);
+		for(var i=randAadd.rank-1;i>-1;i--){
+			var sub=0;
+			for(var j=0;j<randAadd.numberOfCols-1;j++){
+				if(j==i)
+					continue;
+				sub+=parseFloat(randAadd.matrix[i][j])*parseFloat(No[j]||0);
+			}
+			No[i]=((parseFloat(randAadd.matrix[i][randAadd.numberOfCols-1])-sub)/parseFloat(randAadd.matrix[i][i]));
+		}
+		
+		var html=[];
+		for(var i=0;i<No.length;i++){
+			html.push('<span id="no-x-'+(i+1)+'">x<sub>'+(i+1)+'</sub> = '+(No[i].toFixed(3).toString()).replace(/0+$/gi,'').replace(/\.$/gi,'')+'</span>')
+		}
+		return html.join(', ');
+	}
+	
+	// Hiển thị hệ phương trình tuyến tính
+	function showHPT(randAadd,elID){
+		var $eqrs=jQuery(elID);
+		var OneEquation=[];
+		for(var i=0; i< randAadd.numberOfCols-1; i++){
+			OneEquation.push('<span id="eqr-{{EquationNumber}}-a-'+(i+1)+'">{{a{{EquationNumber}},'+(i+1)+'}}</span>.<span>x<sub>'+(i+1)+'</sub></span>');
+		}
+		OneEquation=OneEquation.join(' + ');
+		OneEquation+=' =  <span id="eqr-{{EquationNumber}}-b">{{b{{EquationNumber}}}}</span>';
+		$eqrs.empty();
+		for(var i=0; i < randAadd.rank; i++){
+			var $eq=jQuery(('<div id="result-equation-{{EquationNumber}}"><nobr>'+OneEquation.replace(/\{\s*\{\s*EquationNumber\s*\}\s*\}/gi,i+1)+'</nobr></div>').replace(/\{\{a(\d+),(\d+)\}\}/gi,function (){
+				return (randAadd.matrix[parseInt(arguments[1],10)-1][parseInt(arguments[2],10)-1]).toFixed(3).toString().replace(/0+$/gi,'').replace(/\.$/gi,'');
+			}).replace(/\{\{b(\d+)\}\}/gi,function (){
+				return (randAadd.matrix[parseInt(arguments[1],10)-1][randAadd.numberOfCols-1]).toFixed(3).toString().replace(/0+$/gi,'').replace(/\.$/gi,'');
+			}));
+			$eqrs.append($eq);
+		}
+	}
+
+	// Tạo danh sách phương trình tuyến tính
+	jQuery(document).on('click','#btn-giaihe',giaiHPTTT);
+	window.NumberOfEquations=0;
+	function InitTime(){
+		var $eqs=jQuery('#equation-lists');
+		window.NumberOfEquations=parseFloat(prompt('Nhập số ẩn:','4'),10)||4;
+		if(NumberOfEquations < 1) NumberOfEquations=4;
+		var OneEquation=[];
+		for(var i=1; i<= NumberOfEquations; i++){
+			OneEquation.push('<span id="eq-{{EquationNumber}}-a-'+i+'">a<sub>{{EquationNumber}},'+i+'</sub></span>.<span>x<sub>'+i+'</sub></span>');
+		}
+		OneEquation=OneEquation.join(' + ');
+		OneEquation+=' =  <span id="eq-{{EquationNumber}}-b">b<sub>{{EquationNumber}}</sub></span>';
+		$eqs.empty();
+		for(var i=1; i<= NumberOfEquations; i++){
+			var $eq=jQuery('<div id="equation-{{EquationNumber}}"><nobr>'+OneEquation.replace(/\{\s*\{\s*EquationNumber\s*\}\s*\}/gi,i)+'</nobr></div>');
+			$eqs.append($eq);
+		}
+	}
+	jQuery(InitTime);
+	</script>
+	<script>
+	function resetHE(){
+		window.VariablesDataHTML={};
+		window.VariablesData={};
+		window.MatrixA=[];
+		window.MatrixAadd=[];
+		window.NumberOfEquations=0;
+		InitTime();
+	}
+	</script>
+	<script>
+	// Cập nhật hệ số
+	window.VariablesDataHTML={};
+	window.VariablesData={};
+	window.MatrixA=[];
+	window.MatrixAadd=[];
+	jQuery(document).on('click','span[id^="eq-"]',function (e){
+		var $this=jQuery(this),html=$this.html(),size=$this.text().length,value='',$input,id=$this.attr('id');
+		if(!VariablesDataHTML[id])
+			VariablesDataHTML[id]=html;
+		if(VariablesData[id]){
+			value=VariablesData[id];
+		}
+		$input=jQuery('<input value="'+value+'" type="text" size="'+size+'">');
+		$this.empty().append($input);
+		$input.focus();
+	}).on('blur','span[id^="eq-"] > input',function (e){
+		var $this=jQuery(this),$parent=$this.parent(),id=$parent.attr('id');
+		var x=0,y=0,type='MatrixA',temp;
+		temp=id.replace(/eq-(\d+)-a-(\d+)/gi,function (){
+			x=(parseFloat(arguments[2])||1)-1;
+			y=(parseFloat(arguments[1])||1)-1;
+			type='MatrixA';
+			return '';
+		});
+		temp=id.replace(/eq-(\d+)-b/gi,function (){
+			type='MatrixAadd';
+			x=NumberOfEquations;
+			y=(parseFloat(arguments[1])||1)-1;
+			return '';
+		});
+		if(jQuery.trim($this.val())==='' || isNaN(parseFloat($this.val()))){
+			try{
+				VariablesData[id]='0';
+				delete VariablesData[id];
+				if(!window[type])
+					window[type]={};
+				if(!window[type][y])
+					window[type][y]=[];
+				window[type][y][x]=0;
+
+				if(type=='MatrixA'){
+					if(!window['MatrixAadd'])
+						window['MatrixAadd']={};
+					if(!window['MatrixAadd'][y])
+						window['MatrixAadd'][y]=[];
+					window['MatrixAadd'][y][x]=0;
+				}
+
+			}catch(e){console.log(e)}
+			$parent.html(VariablesDataHTML[id]||'0');
+		}else{
+			try{
+				VariablesData[id]=parseFloat($this.val())||0;
+				if(!window[type])
+					window[type]={};
+				if(!window[type][y])
+					window[type][y]=[];
+				window[type][y][x]=VariablesData[id];
+				if(type=='MatrixA'){
+					if(!window['MatrixAadd'])
+						window['MatrixAadd']={};
+					if(!window['MatrixAadd'][y])
+						window['MatrixAadd'][y]=[];
+					window['MatrixAadd'][y][x]=VariablesData[id];
+				}
+			}catch(e){console.log(e)}
+			$parent.html(VariablesData[id]);
+		}
+	});
+	</script>
+
+	</body>
+</html>
