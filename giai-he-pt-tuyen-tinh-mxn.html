@@ -65,9 +65,19 @@ body {
 	padding-top: 24px;
 	padding-left: 12px;
 }
+.footer{
+	text-align: center;
+}
+.logo{
+	text-align: center;
+	margin: 0 auto;
+}
 	</style>
 	</head>
 	<body>
+	<div class="logo">
+		<img src="data:image/png;base64,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"/>
+	</div>
 	<div class="wrap">
 		<div class="container">
 		<h3>Giải hệ phương trình tuyến tính</h3>
@@ -158,6 +168,11 @@ body {
 		var matrixDim=rowsLength*colsLength;
 		
 		var continueMatrix=Array.prototype.slice.apply(matrix);
+
+		try{
+			console.log('Ma trận đầu vào:');
+			logMatrix(continueMatrix)
+		}catch(e){}
 		
 		var cnt=0;
 		// Bắt đầu biến đổi sơ cấp
@@ -169,8 +184,14 @@ body {
 				break;
 			}
 			sortedMatrix=sortMatrixRow(continueMatrix);
+			
+			try{
+				console.log('Ma trận đã được sắp xếp:');
+				logMatrix(sortedMatrix.matrix);
+			}catch(e){}
+			
 			if(sortedMatrix.isOK){
-				console.log(JSON.stringify(sortedMatrix));
+				console.log('Đó là ma trận hình thang, kết thúc.');
 				break;
 			}
 			for(var i=0,l=sortedMatrix.matrix.length-1;i<l;i++){
@@ -182,16 +203,25 @@ body {
 					for(var j=zero0,len=row0.length;j<len;j++){
 						switch(true){
 							case row0[j] - row1[j] > 0:
+								try{
+									console.log('Hàng '+(i+2)+' nhân '+displayFloat(row0[j])+'/'+displayFloat(row1[j])+' ('+displayFloat(row0[j]/row1[j])+') trừ hàng '+(i+1)+' -> Hàng '+(i+2));
+								}catch(e){}
 								row1=mulipleRow(row1,row0[j]/row1[j]);
 								row1=subRow(row1,row0);
 								sortedMatrix.matrix[i+1]=row1;
 								break;
 							case row0[j] - row1[j] < 0:
+								try{
+									console.log('Hàng '+(i+1)+' nhân '+displayFloat(row1[j])+'/'+displayFloat(row0[j])+' ('+displayFloat(row1[j]/row0[j])+') trừ hàng '+(i+2)+' -> Hàng '+(i+1));
+								}catch(e){}
 								row0=mulipleRow(row0,row1[j]/row0[j]);
 								row0=subRow(row0,row1);
 								sortedMatrix.matrix[i]=row0;
 								break;
 							default:
+								try{
+									console.log('Hàng '+(i+1)+' trừ hàng '+(i+2)+' -> Hàng '+(i+2));
+								}catch(e){}
 								row1=subRow(row0,row1);
 								sortedMatrix.matrix[i+1]=row1;
 								break;
@@ -201,6 +231,10 @@ body {
 				}
 			}
 			continueMatrix=sortedMatrix.matrix;
+			try{
+				console.log('Ta được:');
+				logMatrix(continueMatrix);
+			}catch(e){}
 		}
 		return {
 			matrix: sortedMatrix.matrix,
@@ -212,18 +246,22 @@ body {
 		};
 	}
 	
+	function displayFloat(fl){
+		var flo=parseFloat(fl)||0;
+		return flo.toFixed(3).toString().replace(/0+$/gi,'').replace(/\.$/gi,'');
+	}
 	// Giải phương trình
 	function giaiHPTTT(){
 		var numberOfVariables=(NumberOfColumns+1)*NumberOfRows;
 		if(Object.keys(VariablesData).length !== numberOfVariables){
-			alert('Bạn chưa nhập đủ.');
+			alert('Bạn chưa nhập đủ hệ số.');
 			return;
 		}
 		var randA=matrixRankCalculate(MatrixA),randAadd=matrixRankCalculate(MatrixAadd);
 		switch(true){
 			case randA.rank < randAadd.rank:
 				// Hệ vô nghiệm
-				result.innerHTML='Hệ vô nghiệm';
+				result.innerHTML='Hệ vô nghiệm :\'(';
 				break;
 			case randA.rank == randAadd.rank:
 				// Hệ có nghiệm
@@ -233,7 +271,7 @@ body {
 					result.innerHTML='<div class="title">Hệ có nghiệm duy nhất:</div><div>'+DSNghiem+'</div>';
 				}else{
 					// Hệ có nghiệm tham số
-					result.innerHTML='<div class="title">Hệ có nghiệm tham số, hãy tham số hóa:</div><div id="eqr"></div>';
+					result.innerHTML='<div class="title">Hệ có nghiệm tham số ^_^, hãy tham số hóa:</div><div id="eqr"></div>';
 					showHPT(randAadd,'#eqr');
 				}
 				break;
@@ -256,13 +294,70 @@ body {
 		
 		var html=[];
 		for(var i=0;i<No.length;i++){
-			html.push('<span id="no-x-'+(i+1)+'">x<sub>'+(i+1)+'</sub> = '+(No[i].toFixed(3).toString()).replace(/0+$/gi,'').replace(/\.$/gi,'')+'</span>')
+			html.push('<span id="no-x-'+(i+1)+'">x<sub>'+(i+1)+'</sub> = '+displayFloat(No[i])+'</span>')
 		}
 		return html.join(', ');
 	}
 	
+	// Log ma trận lên console.log
+	function logMatrix(matrix){
+		var text=[];
+		for(var i=0; i < matrix.length; i++){
+			var arr=[];
+			for(var j=0; j< matrix[i].length; j++){
+				try{
+					arr.push(displayFloat(matrix[i][j]));
+				}catch(e){}
+			}
+			text.push(arr.join("\t"))
+		}
+		console.log(text.join("\n"));
+	}
+
 	// Hiển thị hệ phương trình tuyến tính
 	function showHPT(randAadd,elID){
+		var $eqrs=jQuery(elID);
+		$eqrs.empty();
+		for(var i=0; i < randAadd.rank; i++){
+			var OneEquation='';
+			for(var j=0; j< randAadd.numberOfCols-1; j++){
+				if(randAadd.matrix[i][j] == 0) continue;
+				if(randAadd.matrix[i][j] < 0){
+					OneEquation+=' - ';
+				}else{
+					OneEquation+=' + ';
+				}
+				if(Math.abs(randAadd.matrix[i][j]) == 1)
+					OneEquation+=('<span id="eqr-'+(i+1)+'-a-'+(i+1)+','+(j+1)+'"></span><span>x<sub>'+(j+1)+'</sub></span>');
+				else
+					OneEquation+=('<span id="eqr-'+(i+1)+'-a-'+(i+1)+','+(j+1)+'">'+displayFloat(Math.abs(randAadd.matrix[i][j]))+'</span>.<span>x<sub>'+(j+1)+'</sub></span>');
+			}
+			OneEquation=OneEquation.replace(/^[\+\s\r\n\t]+|[\+\s\r\n\t]+$/gi,'');
+			OneEquation+=' =  <span id="eqr-'+(i+1)+'-b">'+displayFloat(randAadd.matrix[i][randAadd.numberOfCols-1])+'</span>';
+			var $eq=jQuery('<div id="result-equation-'+(i+1)+'"><nobr>'+OneEquation+'</nobr></div>');
+			$eqrs.append($eq);
+		}
+	}
+	
+	// Hiển thị hệ phương trình tuyến tính cách 2
+	function showHPT2(randAadd,elID){
+		var $eqrs=jQuery(elID);
+		$eqrs.empty();
+		for(var i=0; i < randAadd.rank; i++){
+			var OneEquation=[];
+			for(var j=0; j< randAadd.numberOfCols-1; j++){
+				if(randAadd.matrix[i][j] == 0) continue;
+				OneEquation.push('<span id="eqr-'+(i+1)+'-a-'+(i+1)+','+(j+1)+'">'+displayFloat(randAadd.matrix[i][j])+'</span>.<span>x<sub>'+(j+1)+'</sub></span>');
+			}
+			OneEquation=OneEquation.join(' + ');
+			OneEquation+=' =  <span id="eqr-'+(i+1)+'-b">'+displayFloat(randAadd.matrix[i][randAadd.numberOfCols-1])+'</span>';
+			var $eq=jQuery('<div id="result-equation-'+(i+1)+'"><nobr>'+OneEquation+'</nobr></div>');
+			$eqrs.append($eq);
+		}
+	}
+	
+	// Hiển thị hệ phương trình tuyến tính cách 3
+	function showHPT3(randAadd,elID){
 		var $eqrs=jQuery(elID);
 		var OneEquation=[];
 		for(var i=0; i< randAadd.numberOfCols-1; i++){
@@ -272,21 +367,23 @@ body {
 		OneEquation+=' =  <span id="eqr-{{EquationNumber}}-b">{{b{{EquationNumber}}}}</span>';
 		$eqrs.empty();
 		for(var i=0; i < randAadd.rank; i++){
-			var $eq=jQuery(('<div id="result-equation-{{EquationNumber}}"><nobr>'+OneEquation.replace(/\{\s*\{\s*EquationNumber\s*\}\s*\}/gi,i+1)+'</nobr></div>').replace(/\{\{a(\d+),(\d+)\}\}/gi,function (){
-				return (randAadd.matrix[parseInt(arguments[1],10)-1][parseInt(arguments[2],10)-1]).toFixed(3).toString().replace(/0+$/gi,'').replace(/\.$/gi,'');
+			var $eq=jQuery(('<div id="result-equation-'+(i+1)+'"><nobr>'+OneEquation.replace(/\{\s*\{\s*EquationNumber\s*\}\s*\}/gi,i+1)+'</nobr></div>').replace(/\{\{a(\d+),(\d+)\}\}/gi,function (){
+				return displayFloat(randAadd.matrix[parseInt(arguments[1],10)-1][parseInt(arguments[2],10)-1]);
 			}).replace(/\{\{b(\d+)\}\}/gi,function (){
-				return (randAadd.matrix[parseInt(arguments[1],10)-1][randAadd.numberOfCols-1]).toFixed(3).toString().replace(/0+$/gi,'').replace(/\.$/gi,'');
+				return displayFloat(randAadd.matrix[parseInt(arguments[1],10)-1][randAadd.numberOfCols-1]);
 			}));
 			$eqrs.append($eq);
 		}
 	}
 
 	// Tạo danh sách phương trình tuyến tính
-	jQuery(document).on('click','#btn-giaihe',giaiHPTTT);
 	window.NumberOfColumns=0;
 	window.NumberOfRows=0;
 	function InitTime(){
 		var $eqs=jQuery('#equation-lists');
+		try{
+			result.innerHTML='Dương Thành Vịnh - AT13CLC01';
+		}catch(e){}
 		window.NumberOfColumns=parseFloat(prompt('Nhập số ẩn (cột):','4'),10)||4;
 		if(NumberOfColumns < 1) NumberOfColumns=4;
 
@@ -300,7 +397,7 @@ body {
 		OneEquation+=' =  <span id="eq-{{EquationNumber}}-b">b<sub>{{EquationNumber}}</sub></span>';
 		$eqs.empty();
 		for(var i=1; i<= NumberOfRows; i++){
-			var $eq=jQuery('<div id="equation-{{EquationNumber}}"><nobr>'+OneEquation.replace(/\{\s*\{\s*EquationNumber\s*\}\s*\}/gi,i)+'</nobr></div>');
+			var $eq=jQuery('<div id="equation-'+i+'"><nobr>'+OneEquation.replace(/\{\s*\{\s*EquationNumber\s*\}\s*\}/gi,i)+'</nobr></div>');
 			$eqs.append($eq);
 		}
 	}
@@ -322,6 +419,7 @@ body {
 	window.VariablesData={};
 	window.MatrixA=[];
 	window.MatrixAadd=[];
+	jQuery(document).on('click','#btn-giaihe',giaiHPTTT);
 	jQuery(document).on('click','span[id^="eq-"]',function (e){
 		var $this=jQuery(this),html=$this.html(),size=$this.text().length,value='',$input,id=$this.attr('id');
 		if(!VariablesDataHTML[id])
@@ -388,5 +486,6 @@ body {
 	});
 	</script>
 
+	<div class="footer">Copyright &copy; by VinhNoName # At13clc01 # KMA</div>
 	</body>
 </html>
