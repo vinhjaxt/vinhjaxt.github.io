@@ -1,0 +1,14 @@
+#code, pre {
+  overflow: auto;
+  font-size: 11pt;
+  font-family: Monaco, "Liberation Mono", "Courier New", "Lucida Console", Consolas, "DejaVu Sans Mono","Bitstream Vera Sans Mono", monospace;
+}
+#code {
+  height: 15em;
+}
+pre {
+  height: 25em;
+}
+.centered {
+  text-align: center;
+}
