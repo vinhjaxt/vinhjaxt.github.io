@@ -342,7 +342,7 @@ String.prototype.hexDecode = function(){
 			case "offsetlookup":
 				break;
 			case "identifier":
-				if(~['constref'].indexOf(parent['kind'])){
+				if(~['constref','parameter'].indexOf(parent['kind'])){
 					break;
 				}
 				if(global.definedFuncs[astChild['name']]){
