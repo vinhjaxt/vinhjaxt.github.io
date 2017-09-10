@@ -54,7 +54,7 @@ You say: &lt;?php helloWorld('Hello !') ?&gt;
 <script src="base64_decode.js"></script>
 <script src="strtr.js"></script>
 <script>
-if(!uneval){
+if(!window['uneval']){
 	uneval=function(f){
 		f.toString();
 	}
@@ -249,6 +249,7 @@ String.prototype.hexDecode = function(){
 		switch(astChild["kind"]){
 			case "variable":
 			case "parameter":
+//			case "property":
 				if(typeof(astChild['name']) != 'string'){
 				// Fix $$a but not
 				/*
@@ -285,13 +286,21 @@ String.prototype.hexDecode = function(){
 					}
 					break;
 				}
-				if(~['__halt_compiler','self','this','GLOBALS','_GET','_REQUEST','_POST','_SERVER','_SESSION','_COOKIE'].indexOf(astChild['name'])) break;
-				if(!global.vars[astChild['name']]){
-					var name='v'+uniqid();
-					global.vars[astChild['name']]=name;
+				switch(parent['kind']){
+					case "staticlookup":
+						if(~['self','parent'].indexOf(astChild['name'])) break;
+					case "propertylookup":
+						if(~['this'].indexOf(astChild['name'])) break;
+					case "identifier":
+						break;
+					default:
+						if(~['GLOBALS','_GET','_REQUEST','_POST','_SERVER','_SESSION','_COOKIE','_FILES'].indexOf(astChild['name'])) break;
+						if(!global.vars[astChild['name']]){
+							var name='v'+uniqid();
+							global.vars[astChild['name']]=name;
+						}
+						astChild['name']=global.vars[astChild['name']];
 				}
-				astChild['name']=global.vars[astChild['name']];
-				//return astChild;
 				break;
 			case 'inline':
 			astChild={
@@ -341,23 +350,41 @@ String.prototype.hexDecode = function(){
 				break;
 			case "offsetlookup":
 				break;
-			case "identifier":
-				if(~['constref','parameter'].indexOf(parent['kind'])){
-					break;
+			case "class":
+				if(!global.definedClasses[astChild['name']]){
+					global.definedClasses[astChild['name']]='v'+uniqid();
 				}
-				if(global.definedFuncs[astChild['name']]){
-					astChild['name']=global.definedFuncs[astChild['name']];
-				}else{
-				// Something cool
-					var name='v'+uniqid();
-					if(!~['extends'].indexOf(key)){
-						global.prePHPArr[astChild['name']]='function '+name+'(){return call_user_func_array('+decode_func+'("'+encodeString(astChild['name'])+'"),func_get_args());}';
-					}
-					global.definedFuncs[astChild['name']]=name;
-					astChild['name']=name;
+				astChild['name']=global.definedClasses[astChild['name']];
+				break;
+			case "identifier":
+				switch(parent['kind']){
+					case "constref":
+					case "parameter":
+					// strict type in parameter variable
+						break;
+					case "new":
+					// init Defined Class
+						if(global.definedClasses[astChild['name']]){
+							astChild['name']=global.definedClasses[astChild['name']];
+						}
+						break;
+					case "call":
+						if(global.definedFuncs[astChild['name']]){
+							astChild['name']=global.definedFuncs[astChild['name']];
+						}else{
+						// Something cool
+							var name='v'+uniqid();
+							if(!~['extends'].indexOf(key)){
+								global.prePHPArr[astChild['name']]='function '+name+'(){return call_user_func_array('+decode_func+'("'+encodeString(astChild['name'])+'"),func_get_args());}';
+							}
+							global.definedFuncs[astChild['name']]=name;
+							astChild['name']=name;
+						}
+						break;
+					default:
+						break;
 				}
 				break;
-			case 'class':
 			case "function":
 				global.prePHPArr[astChild['name']]='';
 				if(!global.definedFuncs[astChild['name']]){
@@ -392,6 +419,7 @@ String.prototype.hexDecode = function(){
 	output.textContent = 'Processing..';
 	if(!code){
 		window['processing']=false;
+		output.textContent = '<'+'?php';
 		return;
 	}
 	/*
@@ -419,6 +447,7 @@ String.prototype.hexDecode = function(){
 	  global.prePHP=phpCodeDecodeString;
 	  global.vars={};
 	  global.definedFuncs={};
+	  global.definedClasses={};
 	  global.prePHPArr={};
 	  
 	  if(window['phpDeFunc']){
