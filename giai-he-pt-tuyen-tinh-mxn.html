@@ -97,7 +97,7 @@ body {
 			<div id="result"></div>
 		</div>
 	</div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="jquery.min.js"></script>
 	<script>
 	// Tìm số số 0 đứng ở đầu
 	function countZero(row){
@@ -247,6 +247,7 @@ body {
 	}
 	
 	function displayFloat(fl){
+		if(isNaN(parseFloat(fl))) return fl;
 		var flo=parseFloat(fl)||0;
 		return flo.toFixed(3).toString().replace(/0+$/gi,'').replace(/\.$/gi,'');
 	}
@@ -258,6 +259,8 @@ body {
 			return;
 		}
 		var randA=matrixRankCalculate(MatrixA),randAadd=matrixRankCalculate(MatrixAadd);
+		window.lastMatrixA=randA;
+		window.lastMatrixAadd=randAadd;
 		switch(true){
 			case randA.rank < randAadd.rank:
 				// Hệ vô nghiệm
@@ -271,7 +274,7 @@ body {
 					result.innerHTML='<div class="title">Hệ có nghiệm duy nhất:</div><div>'+DSNghiem+'</div>';
 				}else{
 					// Hệ có nghiệm tham số
-					result.innerHTML='<div class="title">Hệ có nghiệm tham số ^_^, hãy tham số hóa:</div><div id="eqr"></div>';
+					result.innerHTML='<div class="title">Hệ có nghiệm:</div><div id="eqr"></div>';
 					showHPT(randAadd,'#eqr');
 				}
 				break;
@@ -299,6 +302,58 @@ body {
 		return html.join(', ');
 	}
 	
+	window.listsNo={};
+	window.lastParam=false;
+	window.generatedParams=[];
+	function generateParam(){
+		try{
+			if(!lastParam)
+				lastParam='`';
+			var charCode=lastParam.charCodeAt(0);
+			charCode++;
+			if(~['e','E'].indexOf(lastParam)){
+				charCode++;
+			}
+			lastParam=String.fromCharCode(charCode);
+			generatedParams.push(lastParam);
+			return lastParam;
+		}catch(e){}
+	}
+	function getAnyNo(randAadd){
+		// Tìm một số nghiệm có thể của ma trận, rút gọn phương trình
+		window.lastParam=false;
+		for(var i=randAadd.rank-1;i>-1;i--){
+			var sub=0;
+			var VarCount=0;
+			var pos=-1;
+			for(var j=0;j<randAadd.numberOfCols-1;j++){
+				if(randAadd.matrix[i][j]==0){
+					continue;
+				}
+				if(VarCount == 1 && typeof(listsNo[j])=='undefined'){
+					listsNo[j]='(1)'+generateParam();
+				}
+				if(typeof(listsNo[j])=='undefined'){
+					VarCount++;
+					pos=j;
+				}else{
+					var suba,b=randAadd.matrix[i][randAadd.numberOfCols-1];
+					suba=execParam('*',listsNo[j],parseFloat(randAadd.matrix[i][j]));
+					sub=execParam('+',sub,suba);
+					randAadd.matrix[i][randAadd.numberOfCols-1]=execParam('-',b,suba);
+					randAadd.matrix[i][j]=0;
+				}
+			}
+			if(VarCount==1 && ~pos){
+				var b=randAadd.matrix[i][randAadd.numberOfCols-1];
+				listsNo[pos]=execParam('/',b,parseFloat(randAadd.matrix[i][pos]));
+				randAadd.matrix[i][randAadd.numberOfCols-1]=listsNo[pos];
+				randAadd.matrix[i][pos]=1;
+			}
+		}
+		return randAadd
+	}
+	
 	// Log ma trận lên console.log
 	function logMatrix(matrix){
 		var text=[];
@@ -306,7 +361,7 @@ body {
 			var arr=[];
 			for(var j=0; j< matrix[i].length; j++){
 				try{
-					arr.push(displayFloat(matrix[i][j]));
+					arr.push(matrix[i][j].toString().match(/[a-df-z]/i)?matrix[i][j]:displayFloat(matrix[i][j]));
 				}catch(e){}
 			}
 			text.push(arr.join("\t"))
@@ -316,27 +371,221 @@ body {
 
 	// Hiển thị hệ phương trình tuyến tính
 	function showHPT(randAadd,elID){
+		window.listsNo={};
+		window.generatedParams=[];
+		var newRandAadd=matrixRankCalculate((getAnyNo(JSON.parse(JSON.stringify(randAadd)))).matrix);
+		randAadd=newRandAadd;
+		var $eqrs=jQuery(elID);
+		$eqrs.empty();
+		var params=[];
+		for(var i=0; i < NumberOfColumns; i++){
+			var no=listsNo[i];
+			var OneEquation='';
+			if(no){
+				OneEquation+='<span>x<sub>'+(i+1)+'</sub></span> =  <span id="eqr-'+(i+1)+'-b">'+(no.toString().match(/[a-df-z]/i)?displayParam(no):displayFloat(no))+'</span>';
+			}else{
+				params.push('<span>x<sub>'+(i+1)+'</sub></span>');
+			}
+			var $eq=jQuery('<div id="result-equation-'+(i+1)+'"><nobr>'+OneEquation+'</nobr></div>');
+			$eqrs.append($eq);
+		}
+		for(var i=0;i<generatedParams.length;i++){
+			params.push('<span>'+generatedParams[i]+'</span>');
+		}
+		var OneEquation='&#x2200; '+params.join(', ');
+		OneEquation+=' &#x2208; R';
+		var $eq=jQuery('<div id="result-equation-params"><nobr>'+OneEquation+'</nobr></div>');
+		$eqrs.append($eq);
+	}
+	
+	// Bản beta
+	function showHPTbeta(randAadd,elID){
+		window.listsNo={};
+		var newRandAadd=matrixRankCalculate((getAnyNo(JSON.parse(JSON.stringify(randAadd)))).matrix);
+		randAadd=newRandAadd;
 		var $eqrs=jQuery(elID);
 		$eqrs.empty();
 		for(var i=0; i < randAadd.rank; i++){
 			var OneEquation='';
 			for(var j=0; j< randAadd.numberOfCols-1; j++){
-				if(randAadd.matrix[i][j] == 0) continue;
+				if(randAadd.matrix[i][j] == 0){
+					continue;
+				}
 				if(randAadd.matrix[i][j] < 0){
 					OneEquation+=' - ';
 				}else{
 					OneEquation+=' + ';
 				}
-				if(Math.abs(randAadd.matrix[i][j]) == 1)
+				var val=randAadd.matrix[i][j];
+				if(val && val.toString().match(/[a-df-z]/i)){
+				}else{
+					val=Math.abs(val);
+				}
+				if(val === 1)
 					OneEquation+=('<span id="eqr-'+(i+1)+'-a-'+(i+1)+','+(j+1)+'"></span><span>x<sub>'+(j+1)+'</sub></span>');
 				else
-					OneEquation+=('<span id="eqr-'+(i+1)+'-a-'+(i+1)+','+(j+1)+'">'+displayFloat(Math.abs(randAadd.matrix[i][j]))+'</span>.<span>x<sub>'+(j+1)+'</sub></span>');
+					OneEquation+=('<span id="eqr-'+(i+1)+'-a-'+(i+1)+','+(j+1)+'">'+displayParam(val)+'</span>.<span>x<sub>'+(j+1)+'</sub></span>');
 			}
 			OneEquation=OneEquation.replace(/^[\+\s\r\n\t]+|[\+\s\r\n\t]+$/gi,'');
-			OneEquation+=' =  <span id="eqr-'+(i+1)+'-b">'+displayFloat(randAadd.matrix[i][randAadd.numberOfCols-1])+'</span>';
+			OneEquation+=' =  <span id="eqr-'+(i+1)+'-b">'+((randAadd.matrix[i][randAadd.numberOfCols-1]).toString().match(/[a-df-z]/i)?displayParam(randAadd.matrix[i][randAadd.numberOfCols-1]):displayFloat(randAadd.matrix[i][randAadd.numberOfCols-1]))+'</span>';
 			var $eq=jQuery('<div id="result-equation-'+(i+1)+'"><nobr>'+OneEquation+'</nobr></div>');
 			$eqrs.append($eq);
 		}
+	}
+	
+	function trim(str){
+		if(!str) return '';
+		return str.replace(/^[\r\n\t\s]+|[\r\n\t\s]+$/g,'');
+	}
+	
+	function mergeParam(pr1,pr2){
+		var resPr={};
+		for(var i=0;i<pr1.length;i++){
+			if(typeof(resPr[pr1[i]]) != 'undefined') continue;
+			resPr[pr1[i]]=0;
+		}
+		for(var i=0;i<pr2.length;i++){
+			if(typeof(resPr[pr2[i]]) != 'undefined') continue;
+			resPr[pr2[i]]=0;
+		}
+		return resPr;
+	}
+	// Float: [-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?
+	function execParam(operator,pr1,pr2){
+		var param1=' '+pr1.toString().replace(/[\r\n\s\t]+/g,'')+' ';
+		var sum1=toParam(param1);
+		
+		if(typeof(pr2) != 'string' || !pr2.match(/[a-df-z]/i)){
+			var p2=parseFloat(pr2)||0;
+			switch(operator){
+				case '+':
+					sum1['_digit']+=p2;
+					break;
+				case '-':
+					sum1['_digit']-=p2;
+					break;
+				case '*':
+					for(var i in sum1){
+						sum1[i]*=p2;
+					}
+					break;
+				case '/':
+					for(var i in sum1){
+						sum1[i]/=p2;
+					}
+					break;
+			}
+			return saveParam(sum1);
+		}// if pr2 is number
+
+		var param2=' '+pr2.replace(/[\r\n\s\t]+/g,'')+' ';
+		var sum2=toParam(param2);
+		
+		var params=mergeParam(param1.match(/[a-df-z]+/gi)||[],param2.match(/[a-df-z]+/gi)||[]);
+		params['_digit']=0;
+		switch(operator){
+			case '+':
+				for(var i in params){
+					var p1=parseFloat(sum1[i])||0;
+					var p2=parseFloat(sum2[i])||0;
+					params[i]=p1+p2;
+				}
+				break;
+			case '-':
+				for(var i in params){
+					var p1=parseFloat(sum1[i])||0;
+					var p2=parseFloat(sum2[i])||0;
+					params[i]=p1-p2;
+				}
+				break;
+		}
+		return saveParam(params);
+	}
+	function toParam(pr1){
+		var sum1={};
+		var param1=' '+pr1.toString().replace(/[\r\n\s\t]+/g,'')+' ';
+		// /([\+|\-])?(\(([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)\)\*?)([a-df-z]+)/gi
+		/*
+			var dau=arguments[1];
+			var so=arguments[3];
+			var bien=arguments[5];
+		*/
+		var param1digit=param1.toString().replace(/([\+|\-])?(\((.+?)\)\*?)([a-df-z]+)/gi,function (){
+			var dau=arguments[1];
+			var so=arguments[3];
+			var bien=arguments[4];
+			if(!sum1[bien]) sum1[bien]=0;
+			var digit=0;
+			if(typeof(so) != 'undefined'){
+				try{
+					digit=parseFloat(eval(trim(so)+';'));
+				}catch(e){
+					console.log(trim(so)+';',e);
+					digit=(parseFloat(so));
+					if(isNaN(digit)) digit=0;
+				}
+			}else{
+				digit=1;
+			}
+			if(trim(dau) == '-'){
+				sum1[bien]+=(-digit);
+				return '';
+			}
+			sum1[bien]+=(digit);
+			return '';
+		});
+		sum1['_digit']=0;
+		if(trim(param1digit)){
+			try{
+				sum1['_digit']=parseFloat(eval(param1digit+';'))||0;
+			}catch(e){
+				console.log(param1digit+';',e);
+			}
+		}
+		return sum1;
+	}
+	function saveParam(PrObj){
+		var res='';
+		for(var i in PrObj){
+			if(!parseFloat(PrObj[i]) || PrObj[i] == 0) continue;
+			if(i == '_digit'){
+				res+='+'+PrObj[i].toString();
+				continue;
+			}else{
+				res+='+('+PrObj[i].toString()+')'+i;
+			}
+		}
+		return res.replace(/^\++/g,'');
+	}
+	function displayParam(PrObj){
+		var param=PrObj;
+		if(!(param instanceof Object)){
+			param=toParam(PrObj);
+		}
+		var res='';
+		for(var i in param){
+			if(param[i] == 0) continue;
+			var dau='+';
+			if(param[i] < 0)
+				dau='-';
+			var giatri='';
+			if(param[i]!==1 && param[i]!==-1){
+				giatri=displayFloat(param[i]);
+				if(giatri)
+					giatri=giatri.replace(/^-/,'');
+			}
+			if(i == '_digit'){
+				res+=dau+displayFloat(Math.abs(param[i]));
+				continue;
+			}
+			res+=dau+giatri+i;
+		}
+		return res.replace(/^\++/g,'');
+	}
+
+	function shortParam(pr){
+		if(pr.match(/[a-df-z]/i)) return execParam('+',pr,0);
+		return displayFloat(pr);
 	}
 	
 	// Hiển thị hệ phương trình tuyến tính cách 2
@@ -427,9 +676,47 @@ body {
 		if(VariablesData[id]){
 			value=VariablesData[id];
 		}
-		$input=jQuery('<input value="'+value+'" type="text" size="'+size+'">');
+		$input=jQuery('<input value="" type="text" size="'+size+'">');
 		$this.empty().append($input);
-		$input.focus();
+		$input.val(value).focus().select();
+		$input.on('keyup',function (e){
+			//console.log(e);
+			var $next=jQuery('#btn-giaihe');
+			if(e.which == 32){
+				$this.blur();
+				id.replace(/^eq-(\d+)-(a|b)(-(\d+))?$/gi,function (){
+					$next=jQuery('#eq-'+arguments[1]+'-'+arguments[2]+'-'+(parseInt(arguments[4],10)+1));
+					if($next.length < 1 && arguments[4]){
+						$next=jQuery('#eq-'+arguments[1]+'-b');
+					}
+					if($next.length < 1){
+						$next=jQuery('#eq-'+(parseInt(arguments[1],10)+1)+'-a-1');
+					}
+					return '';
+				});
+				try{
+					$next.click();
+				}catch(e){}
+			}else if(e.which == 13){
+				$this.blur();
+				id.replace(/^eq-(\d+)-(a|b)(-(\d+))?$/gi,function (){
+					$next=jQuery('#eq-'+(parseInt(arguments[1],10)+1)+'-'+arguments[2]+arguments[3]||'');
+					if($next.length < 1){
+						$next=jQuery('#eq-1-'+arguments[2]+'-'+(parseInt(arguments[4],10)+1)+'');
+					}
+					if($next.length < 1){
+						$next=jQuery('#eq-'+(parseInt(arguments[1],10)+1)+'-b');
+					}
+					if($next.length < 1 && arguments[4]){
+						$next=jQuery('#eq-1-b');
+					}
+					return '';
+				});
+				try{
+					$next.click();
+				}catch(e){}
+			}
+		});
 	}).on('blur','span[id^="eq-"] > input',function (e){
 		var $this=jQuery(this),$parent=$this.parent(),id=$parent.attr('id');
 		var x=0,y=0,type='MatrixA',temp;
@@ -445,7 +732,7 @@ body {
 			y=(parseFloat(arguments[1])||1)-1;
 			return '';
 		});
-		if(jQuery.trim($this.val())==='' || isNaN(parseFloat($this.val()))){
+		if(jQuery.trim($this.val())==='' || isNaN(parseFloat(jQuery.trim($this.val())))){
 			try{
 				VariablesData[id]='0';
 				delete VariablesData[id];
