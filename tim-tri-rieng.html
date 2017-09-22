@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Tìm trị riêng, cơ sở, chiều</title>
+	<style>
+span[id^="eq-"] {
+	cursor: pointer;
+}
+html{
+	font-size: 19px;
+}
+body {
+    font-size: 19px;
+    color: #333;
+}
+.container {
+	width: 80%;
+	border-color: #e7e7e7;
+	border-left-color: #ce4844 !important;
+	padding: 20px;
+	margin: 20px 0;
+	border: 1px solid #eee;
+	border-left-width: 5px;
+	border-radius: 3px;
+	overflow: visible;
+	margin: 0 auto;
+	background-color: #ede6e6;
+}
+.btn-default {
+    color: #333;
+    background-color: #8bce63;;
+    border-color: #ccc;
+}
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+	color: #ff0505;
+}
+.button {
+	padding-top: 24px;
+	padding-left: 12px;
+}
+.wrap {
+	width: 100%;
+}
+#result {
+	padding-top: 24px;
+	padding-left: 12px;
+}
+.footer{
+	text-align: center;
+}
+.logo{
+	text-align: center;
+	margin: 0 auto;
+}
+	</style>
+	</head>
+	<body>
+	<div class="logo">
+		<img style="" src="data:image/png;base64,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"/>
+	</div>
+	<div class="wrap">
+		<div class="container">
+		<h3>Tìm trị riêng, cơ sở và chiều của ma trận vuông</h3>
+			<div id="equation-lists">
+				<!-- Loop manual -->
+				<div id="equation-1">
+				<nobr> 
+					<span id="eq-1-a-1">a<sub>1,1</sub></span>&nbsp;&nbsp;<span id="eq-1-a-2">a<sub>1,2</sub></span>&nbsp;&nbsp;<span id="eq-1-a-3">a<sub>1,3</sub></span>
+				</nobr>
+				</div>
+				<!-- /end Loop manual-->
+			</div>
+			<div class="button">
+				<button id="btn-giaihe" class="btn btn-default">Tìm trị riêng, cơ sở và chiều</button>
+				<button onclick="resetHE();" class="btn btn-default">Ma trận mới</button>
+			</div>
+			<div id="result"></div>
+		</div>
+	</div>
+	<script src="jquery.min.js"></script>
+	<script>
+	// Tìm số số 0 đứng ở đầu
+	function countZero(row){
+		if(!(row instanceof Array)){
+			return 0;
+		}
+		var count=0;
+		for(var i=0,l=row.length; i<l; i++){
+			if(parseFloat(row[i]) == 0)
+				count++;
+			else
+				break;
+		}
+		return count;
+	}
+	
+	// Sắp xếp ma trận theo hình thang
+	function sortMatrixRow(matrix){
+		if(!(matrix instanceof Array)) return false;
+		var rowsLength=matrix.length;
+		var zeros={},isOK=true,haveZero=[],numberZeroRows=0;
+		for(var i=0; i<rowsLength;i++){
+			var numberOfZeros=countZero(matrix[i]);
+			if(matrix[i].length==numberOfZeros) numberZeroRows++;
+			if(matrix[i].length!=numberOfZeros && haveZero.indexOf(numberOfZeros)!=-1) isOK=false;
+			haveZero.push(numberOfZeros);
+			zeros[matrix[i].join(',')]=numberOfZeros;
+		}
+		var resmatrix=[];
+		resmatrix=matrix.sort(function (a,b){
+			return zeros[a.join(',')] > zeros[b.join(',')];
+		});
+		return {
+			matrix: resmatrix,
+			isOK: isOK,
+			zeros: zeros,
+			numberZeroRows: numberZeroRows
+		};
+	}
+	function mulipleRow(row,mul){
+		if(!(row instanceof Array)) return false;
+		var resRow=[],times=parseFloat(mul)||1;
+		for(var i=0;i<row.length;i++){
+			resRow[i]=(parseFloat(row[i])||0)*times;
+		}
+		return resRow;
+	}
+	function subRow(row0,row1){
+		if(!(row0 instanceof Array) || !(row1 instanceof Array) || row0.length != row1.length) return false;
+		var resRow=[];
+		for(var i=0,l=row0.length;i<l;i++){
+			resRow[i]=row0[i]-row1[i];
+		}
+		return resRow;
+	}
+	// Tìm hạng của ma trận và trả về ma trận hình thang
+	function matrixRankCalculate(matrix){
+		if(!(matrix instanceof Array)) return false;
+		
+		// Tính số chiều và size của ma trận
+		var rowsLength=matrix.length,colsLength;
+		for(var i=0; i<rowsLength; i++){
+			if(matrix[i] && matrix[i] instanceof Array){
+				colsLength=matrix[i].length;
+				break;
+			}
+		}
+		var matrixDim=rowsLength*colsLength;
+		
+		var continueMatrix=Array.prototype.slice.apply(matrix);
+
+		try{
+			console.log('Ma trận đầu vào:');
+			logMatrix(continueMatrix)
+		}catch(e){}
+		
+		var cnt=0;
+		// Bắt đầu biến đổi sơ cấp
+		while(1){
+			cnt++;
+			if(cnt > 100){
+				console.log('Quá 100 lần biến đổi @@');
+				console.log(JSON.stringify(sortedMatrix));
+				break;
+			}
+			sortedMatrix=sortMatrixRow(continueMatrix);
+			
+			try{
+				console.log('Ma trận đã được sắp xếp:');
+				logMatrix(sortedMatrix.matrix);
+			}catch(e){}
+			
+			if(sortedMatrix.isOK){
+				console.log('Đó là ma trận hình thang, kết thúc.');
+				break;
+			}
+			for(var i=0,l=sortedMatrix.matrix.length-1;i<l;i++){
+				var row0=sortedMatrix.matrix[i];
+				var row1=sortedMatrix.matrix[i+1];
+				var zero0=sortedMatrix.zeros[row0.join(',')];
+				var zero1=sortedMatrix.zeros[row1.join(',')];
+				if(zero0!=row0.length && zero0 == zero1){
+					for(var j=zero0,len=row0.length;j<len;j++){
+						switch(true){
+							case row0[j] - row1[j] > 0:
+								try{
+									console.log('Hàng '+(i+2)+' nhân '+displayFloat(row0[j])+'/'+displayFloat(row1[j])+' ('+displayFloat(row0[j]/row1[j])+') trừ hàng '+(i+1)+' -> Hàng '+(i+2));
+								}catch(e){}
+								row1=mulipleRow(row1,row0[j]/row1[j]);
+								row1=subRow(row1,row0);
+								sortedMatrix.matrix[i+1]=row1;
+								break;
+							case row0[j] - row1[j] < 0:
+								try{
+									console.log('Hàng '+(i+1)+' nhân '+displayFloat(row1[j])+'/'+displayFloat(row0[j])+' ('+displayFloat(row1[j]/row0[j])+') trừ hàng '+(i+2)+' -> Hàng '+(i+1));
+								}catch(e){}
+								row0=mulipleRow(row0,row1[j]/row0[j]);
+								row0=subRow(row0,row1);
+								sortedMatrix.matrix[i]=row0;
+								break;
+							default:
+								try{
+									console.log('Hàng '+(i+1)+' trừ hàng '+(i+2)+' -> Hàng '+(i+2));
+								}catch(e){}
+								row1=subRow(row0,row1);
+								sortedMatrix.matrix[i+1]=row1;
+								break;
+						}
+						break;
+					}
+				}
+			}
+			continueMatrix=sortedMatrix.matrix;
+			try{
+				console.log('Ta được:');
+				logMatrix(continueMatrix);
+			}catch(e){}
+		}
+		return {
+			matrix: sortedMatrix.matrix,
+			dim: matrixDim,
+			rank: rowsLength-sortedMatrix.numberZeroRows,
+			numberZeroRows: sortedMatrix.numberZeroRows,
+			numberOfCols: colsLength,
+			numberOfRows: rowsLength
+		};
+	}
+	
+	function displayFloat(fl){
+		if(isNaN(parseFloat(fl))) return fl;
+		var flo=parseFloat(fl)||0;
+		return flo.toFixed(3).toString().replace(/0+$/gi,'').replace(/\.$/gi,'');
+	}
+	
+	window.listsNo={};
+	window.lastParam=false;
+	window.generatedParams=[];
+	function generateParam(){
+		try{
+			if(!lastParam)
+				lastParam='`';
+			var charCode=lastParam.charCodeAt(0);
+			charCode++;
+			if(~['e','E'].indexOf(lastParam)){
+				charCode++;
+			}
+			lastParam=String.fromCharCode(charCode);
+			generatedParams.push(lastParam);
+			return lastParam;
+		}catch(e){}
+	}
+	function getAnyNo(randAadd){
+		// Tìm một số nghiệm có thể của ma trận, rút gọn phương trình
+		window.lastParam=false;
+		for(var i=randAadd.rank-1;i>-1;i--){
+			var sub=0;
+			var VarCount=0;
+			var pos=-1;
+			for(var j=0;j<randAadd.numberOfCols-1;j++){
+				if(randAadd.matrix[i][j]==0){
+					continue;
+				}
+				if(VarCount == 1 && typeof(listsNo[j])=='undefined'){
+					listsNo[j]='(1)'+generateParam();
+				}
+				if(typeof(listsNo[j])=='undefined'){
+					VarCount++;
+					pos=j;
+				}else{
+					var suba,b=randAadd.matrix[i][randAadd.numberOfCols-1];
+					suba=execParam('*',listsNo[j],parseFloat(randAadd.matrix[i][j]));
+					sub=execParam('+',sub,suba);
+					randAadd.matrix[i][randAadd.numberOfCols-1]=execParam('-',b,suba);
+					randAadd.matrix[i][j]=0;
+				}
+			}
+			if(VarCount==1 && ~pos){
+				var b=randAadd.matrix[i][randAadd.numberOfCols-1];
+				listsNo[pos]=execParam('/',b,parseFloat(randAadd.matrix[i][pos]));
+				randAadd.matrix[i][randAadd.numberOfCols-1]=listsNo[pos];
+				randAadd.matrix[i][pos]=1;
+			}
+		}
+		return randAadd
+	}
+	
+	// Log ma trận lên console.log
+	function logMatrix(matrix){
+		var text=[];
+		for(var i=0; i < matrix.length; i++){
+			var arr=[];
+			for(var j=0; j< matrix[i].length; j++){
+				try{
+					arr.push(matrix[i][j].toString().match(/[a-df-z]/i)?matrix[i][j]:displayFloat(matrix[i][j]));
+				}catch(e){}
+			}
+			text.push(arr.join("\t"))
+		}
+		console.log(text.join("\n"));
+	}
+
+	function trim(str){
+		if(!str) return '';
+		return str.replace(/^[\r\n\t\s]+|[\r\n\t\s]+$/g,'');
+	}
+	
+	function mergeParam(pr1,pr2){
+		var resPr={};
+		for(var i=0;i<pr1.length;i++){
+			if(typeof(resPr[pr1[i]]) != 'undefined') continue;
+			resPr[pr1[i]]=0;
+		}
+		for(var i=0;i<pr2.length;i++){
+			if(typeof(resPr[pr2[i]]) != 'undefined') continue;
+			resPr[pr2[i]]=0;
+		}
+		return resPr;
+	}
+	// Float: [-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?
+	function execParam(operator,pr1,pr2){
+		var param1=' '+pr1.toString().replace(/[\r\n\s\t]+/g,'')+' ';
+		var sum1=toParam(param1);
+		
+		if(typeof(pr2) != 'string' || !pr2.match(/[a-df-z]/i)){
+			var p2=parseFloat(pr2)||0;
+			switch(operator){
+				case '+':
+					sum1['_digit']+=p2;
+					break;
+				case '-':
+					sum1['_digit']-=p2;
+					break;
+				case '*':
+					for(var i in sum1){
+						sum1[i]*=p2;
+					}
+					break;
+				case '/':
+					for(var i in sum1){
+						sum1[i]/=p2;
+					}
+					break;
+			}
+			return saveParam(sum1);
+		}// if pr2 is number
+
+		var param2=' '+pr2.replace(/[\r\n\s\t]+/g,'')+' ';
+		var sum2=toParam(param2);
+		
+		var params=mergeParam(param1.match(/[a-df-z]+/gi)||[],param2.match(/[a-df-z]+/gi)||[]);
+		params['_digit']=0;
+		switch(operator){
+			case '+':
+				for(var i in params){
+					var p1=parseFloat(sum1[i])||0;
+					var p2=parseFloat(sum2[i])||0;
+					params[i]=p1+p2;
+				}
+				break;
+			case '-':
+				for(var i in params){
+					var p1=parseFloat(sum1[i])||0;
+					var p2=parseFloat(sum2[i])||0;
+					params[i]=p1-p2;
+				}
+				break;
+		}
+		return saveParam(params);
+	}
+	function toParam(pr1){
+		var sum1={};
+		var param1=' '+pr1.toString().replace(/[\r\n\s\t]+/g,'')+' ';
+		// /([\+|\-])?(\(([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)\)\*?)([a-df-z]+)/gi
+		/*
+			var dau=arguments[1];
+			var so=arguments[3];
+			var bien=arguments[5];
+		*/
+		var param1digit=param1.toString().replace(/([\+|\-])?(\((.+?)\)\*?)([a-df-z]+)/gi,function (){
+			var dau=arguments[1];
+			var so=arguments[3];
+			var bien=arguments[4];
+			if(!sum1[bien]) sum1[bien]=0;
+			var digit=0;
+			if(typeof(so) != 'undefined'){
+				try{
+					digit=parseFloat(eval(trim(so)+';'));
+				}catch(e){
+					console.log(trim(so)+';',e);
+					digit=(parseFloat(so));
+					if(isNaN(digit)) digit=0;
+				}
+			}else{
+				digit=1;
+			}
+			if(trim(dau) == '-'){
+				sum1[bien]+=(-digit);
+				return '';
+			}
+			sum1[bien]+=(digit);
+			return '';
+		});
+		sum1['_digit']=0;
+		if(trim(param1digit)){
+			try{
+				sum1['_digit']=parseFloat(eval(param1digit+';'))||0;
+			}catch(e){
+				console.log(param1digit+';',e);
+			}
+		}
+		return sum1;
+	}
+	function saveParam(PrObj){
+		var res='';
+		for(var i in PrObj){
+			if(!parseFloat(PrObj[i]) || PrObj[i] == 0) continue;
+			if(i == '_digit'){
+				res+='+'+PrObj[i].toString();
+				continue;
+			}else{
+				res+='+('+PrObj[i].toString()+')'+i;
+			}
+		}
+		return res.replace(/^\++/g,'');
+	}
+	function displayParam(PrObj){
+		var param=PrObj;
+		if(!(param instanceof Object)){
+			param=toParam(PrObj);
+		}
+		var res='';
+		for(var i in param){
+			if(param[i] == 0) continue;
+			var dau='+';
+			if(param[i] < 0)
+				dau='-';
+			var giatri='';
+			if(param[i]!==1 && param[i]!==-1){
+				giatri=displayFloat(param[i]);
+				if(giatri)
+					giatri=giatri.replace(/^-/,'');
+			}
+			if(i == '_digit'){
+				res+=dau+displayFloat(Math.abs(param[i]));
+				continue;
+			}
+			res+=dau+giatri+i;
+		}
+		return res.replace(/^\++/g,'');
+	}
+
+	function shortParam(pr){
+		if(pr.match(/[a-df-z]/i)) return execParam('+',pr,0);
+		return displayFloat(pr);
+	}
+
+	// Tạo danh sách để nhập
+	window.NumberOfRows=0;
+	function InitTime(){
+		var $eqs=jQuery('#equation-lists');
+		try{
+			result.innerHTML='Dương Thành Vịnh - AT13CLC01';
+		}catch(e){}
+		window.NumberOfRows=parseFloat(prompt('Nhập số bậc của ma trận vuông:','3'),10)||3;
+		if(NumberOfRows < 1) NumberOfRows=3;
+		var OneEquation=[];
+		for(var i=1; i<= NumberOfRows; i++){
+			OneEquation.push('<span id="eq-{{EquationNumber}}-a-'+i+'">a<sub>{{EquationNumber}},'+i+'</sub></span>');
+		}
+		OneEquation=OneEquation.join('&nbsp;&nbsp;&nbsp;&nbsp;');
+		$eqs.empty();
+		for(var i=1; i<= NumberOfRows; i++){
+			var $eq=jQuery('<div id="equation-'+i+'"><nobr>'+OneEquation.replace(/\{\s*\{\s*EquationNumber\s*\}\s*\}/gi,i)+'</nobr></div>');
+			$eqs.append($eq);
+		}
+	}
+	jQuery(InitTime);
+	
+	function calDet(A){
+		if(A.length <= 1) return A[0][0];
+		if(A.length == 2) return A[0][0]*A[1][1]-A[0][1]*A[1][0];
+		if(A.length == 3) return A[0][0]*A[1][1]*A[2][2]+A[0][1]*A[1][2]*A[2][0]+A[0][2]*A[1][0]*A[2][1]
+							-A[0][2]*A[1][1]*A[2][0]-A[0][1]*A[1][0]*A[2][2]-A[0][0]*A[1][2]*A[2][1];
+
+		j=0; // Khai triển cột đầu
+		var res=0;
+		for(var i=0;i<A.length;i++){
+			
+			// Lấy ma trận con
+			var childMatrix=[],childLength=A.length-1,childRow=[];
+			for(var ai=0;ai<A.length;ai++){
+				if(ai == i) continue;
+				childRow=[];
+				for(var aj=0;aj<A.length;aj++){
+					if(aj == j) continue;
+					childRow.push(A[ai][aj]);
+				}
+				childMatrix.push(childRow);
+			}
+			
+			// Tính det
+			res+=Math.pow(-1,j+1+i+1)*calDet(childMatrix);
+		}
+		return res;
+	}
+	function calDetPr(A){
+		if(A.length <= 1) return A[0][0];
+		if(A.length == 2) return A[0][0]*A[1][1]-A[0][1]*A[1][0];
+		if(A.length == 3) return A[0][0]*A[1][1]*A[2][2]+A[0][1]*A[1][2]*A[2][0]+A[0][2]*A[1][0]*A[2][1]
+							-A[0][2]*A[1][1]*A[2][0]-A[0][1]*A[1][0]*A[2][2]-A[0][0]*A[1][2]*A[2][1];
+
+		j=0; // Khai triển cột đầu
+		var res=0;
+		for(var i=0;i<A.length;i++){
+			
+			// Lấy ma trận con
+			var childMatrix=[],childLength=A.length-1,childRow=[];
+			for(var ai=0;ai<A.length;ai++){
+				if(ai == i) continue;
+				childRow=[];
+				for(var aj=0;aj<A.length;aj++){
+					if(aj == j) continue;
+					childRow.push(A[ai][aj]);
+				}
+				childMatrix.push(childRow);
+			}
+			
+			// Tính det
+			res+=Math.pow(-1,j+1+i+1)*calDet(childMatrix);
+		}
+		return res;
+	}
+	
+	function giaiTriRieng(){
+	}
+	</script>
+	<script>
+	function resetHE(){
+		window.VariablesDataHTML={};
+		window.VariablesData={};
+		window.MatrixA=[];
+		window.MatrixAadd=[];
+		window.NumberOfRows=0;
+		InitTime();
+	}
+	</script>
+	<script>
+	// Cập nhật hệ số
+	window.VariablesDataHTML={};
+	window.VariablesData={};
+	window.Matrix=[];
+	window.MatrixA=[];
+	window.MatrixAadd=[];
+	jQuery(document).on('click','#btn-giaihe',giaiTriRieng);
+	jQuery(document).on('click','span[id^="eq-"]',function (e){
+		var $this=jQuery(this),html=$this.html(),size=$this.text().length,value='',$input,id=$this.attr('id');
+		if(!VariablesDataHTML[id])
+			VariablesDataHTML[id]=html;
+		if(VariablesData[id]){
+			value=VariablesData[id];
+		}
+		$input=jQuery('<input value="" type="text" size="'+size+'">');
+		$this.empty().append($input);
+		$input.val(value).focus().select();
+		$input.on('keyup',function (e){
+			//console.log(e);
+			var $next=jQuery('#btn-giaihe');
+			if(e.which == 32){
+				$this.blur();
+				id.replace(/^eq-(\d+)-(a|b)(-(\d+))?$/gi,function (){
+					$next=jQuery('#eq-'+arguments[1]+'-'+arguments[2]+'-'+(parseInt(arguments[4],10)+1));
+					if($next.length < 1){
+						$next=jQuery('#eq-'+(parseInt(arguments[1],10)+1)+'-a-1');
+					}
+					return '';
+				});
+				try{
+					$next.click();
+				}catch(e){}
+			}else if(e.which == 13){
+				$this.blur();
+				id.replace(/^eq-(\d+)-(a|b)(-(\d+))?$/gi,function (){
+					$next=jQuery('#eq-'+(parseInt(arguments[1],10)+1)+'-'+arguments[2]+arguments[3]||'');
+					if($next.length < 1){
+						$next=jQuery('#eq-1-'+arguments[2]+'-'+(parseInt(arguments[4],10)+1)+'');
+					}
+					return '';
+				});
+				try{
+					$next.click();
+				}catch(e){}
+			}
+		});
+	}).on('blur','span[id^="eq-"] > input',function (e){
+		var $this=jQuery(this),$parent=$this.parent(),id=$parent.attr('id');
+		var x=0,y=0,type='Matrix',temp;
+		temp=id.replace(/eq-(\d+)-a-(\d+)/gi,function (){
+			x=(parseFloat(arguments[2])||1)-1;
+			y=(parseFloat(arguments[1])||1)-1;
+			type='Matrix';
+			return '';
+		});
+		if(jQuery.trim($this.val())==='' || isNaN(parseFloat(jQuery.trim($this.val())))){
+			try{
+				VariablesData[id]='0';
+				delete VariablesData[id];
+				if(!window[type])
+					window[type]={};
+				if(!window[type][y])
+					window[type][y]=[];
+				window[type][y][x]=0;
+
+			}catch(e){console.log(e)}
+			$parent.html(VariablesDataHTML[id]||'0');
+		}else{
+			try{
+				VariablesData[id]=parseFloat($this.val())||0;
+				if(!window[type])
+					window[type]={};
+				if(!window[type][y])
+					window[type][y]=[];
+				window[type][y][x]=VariablesData[id];
+			}catch(e){console.log(e)}
+			$parent.html(VariablesData[id]);
+		}
+	});
+	</script>
+
+	<div class="footer">Copyright &copy; by VinhNoName # At13clc01 # KMA</div>
+	</body>
+</html>
