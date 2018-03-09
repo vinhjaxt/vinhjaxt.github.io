@@ -9153,6 +9153,7 @@ function b64toBA(s) {
 	<input type="button" onclick="document.code.text.value=xmorse.decode(document.code.text.value,{ space: ' ', long: '-', short: '*' });" value="DeMorse" /><br/> 
 
 	<input type="button" onclick="document.code.text.value=encodeMd5(document.code.text.value);" value="EnMD5" /><br/>
+	<input type="button" onclick="document.code.text.value=ObfuscateJS(document.code.text.value);" value="Obfuscate JS" /><br/>
 
 	<input type="button" onclick="check_hash(document.code.text.value);" value="DetectHash" /><br/>
 
@@ -9654,6 +9655,61 @@ function vDecrypt(str){
 	}
 
 }(this));
+
+function generateUTF8Char(){
+  var max = parseInt('E01EF', 16);
+  var min = parseInt('00B5', 16);
+  return String.fromCharCode(Math.round(Math.random()*(max - min))+min);
+}
+function generateUTF8Var(){
+  while(true){
+    var v = generateUTF8Char();
+    try{
+      eval(v+' = 1');
+      return v;
+    }catch(e){
+    }
+  }
+}
+function ObfuscateJS(code) {
+  var header = `É=-~-~[],ó=-~É,Ë=É<<É,þ=Ë+~[];Ì=(ó-ó)[Û=(''+{})[É+ó]+(''+{})[ó-É]+([].ó+'')[ó-É]+(!!''+'')[ó]+({}+'')[ó+ó]+(!''+'')[ó-É]+(!''+'')[É]+(''+{})[É+ó]+({}+'')[ó+ó]+(''+{})[ó-É]+(!''+'')[ó-É]][Û];Ì(Ì((!''+'')[ó-É]+(!''+'')[ó]+(!''+'')[ó-ó]+(!''+'')[É]+((!''+''))[ó-É]+([].$+'')[ó-É]+'\\\''+''+`;
+  var footer = `+'\\'')())()`;
+  code = code.replace(/./g, function (C) {
+    return '+\'\\\\\'+' + C.tooct().replace(/./g, function (c) {
+      switch(c){
+        case '0':
+          return '(Ë-Ë)';
+        case '1':
+          return '(ó-É)';
+        case '2':
+          return '(É)';
+        case '3':
+          return '(ó)';
+        case '4':
+          return '(þ-ó)';
+        case '5':
+          return '(É+ó)';
+        case '6':
+          return '(Ë-É)';
+        case '7':
+          return '(þ)';
+      }
+	  return '';
+    }).replace(/\)\(/g, ')+(');
+  }).replace(/^\++/g,'');
+  code = header+code+footer;
+  var vars = [], varMap={};
+  code = code.replace(/É|ó|Ë|þ|Ì|Û/g, function ($0) {
+    if(varMap[$0]) return varMap[$0];
+    var newVar = generateUTF8Var();
+    while(~vars.indexOf(newVar)){
+      newVar = generateUTF8Var();
+    }
+    varMap[$0] = newVar;
+    return newVar;
+  });
+  return code;
+}
 </script>
 </body>
 </html>
