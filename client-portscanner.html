@@ -121,7 +121,10 @@ getPortFailureMin('127.0.0.1', [65530, 65531, 65532, 65533, 65534], function (av
   scan('127.0.0.1', ports.pop(), function (status, port, ip, avgFailure, delta){
     if(!status) return;
     console.log(port+': '+status);
-    if(status == 'open') openPorts.textContent += "\r\n"+port+': '+status;
+    if(status == 'open'){
+      openPorts.textContent += "\r\n"+port+': '+status;
+      if(delta < 300) avgFailure = 300;
+    }
     if(status == 'closed') avgFailure = Math.min(avgFailure, delta);
     return avgFailure;
   }, avgFailure-100);
