@@ -180,7 +180,9 @@ function makeCanvas(numPoints){
     var myPoint = makePointCircle(coord[0], coord[1]);
     var text = new fabric.Text(getLabelName(i), {
       fontFamily: 'Comic Sans',
-      fontSize: 20
+      fontSize: 20,
+      selectable: false,
+      hasControls: false
     });
     text.set("left", coord[0]);
     text.set("top", coord[1] - (text.width + 20));
