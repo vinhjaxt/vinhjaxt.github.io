@@ -31,7 +31,9 @@ var myPoints = [];
 var connectedLine1 = {};
 var connectedLine2 = {};
 var connectedPoints = {};
+var labels = {};
 var lines = {};
+var exceptLabels = [];
 fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
 
 makeCanvas(6);
@@ -43,11 +45,20 @@ function updateColor(){
   var availableColors = Array.prototype.slice.call(colors);
   while(pointsLevel.length){
     pointsLevel.sort(function (a, b){
-      return a[1] > b[1] ? -1 : 1;
+      if(a[1] != b[1])
+        return a[1] > b[1] ? -1 : 1;
+      var point1 = fabricGetObjectById(a[0]);
+      var point2 = fabricGetObjectById(b[0]);
+      var color1 = point1.get('stroke');
+      var color2 = point1.get('stroke');
+      if(color1 !== color2)
+        return availableColors.indexOf(color1) > availableColors.indexOf(color2) ? 1 : -1;
+      return point1.get('id') > point2.get('id') ? 1 : -1;
     });
     var item = pointsLevel.shift();
     var id = item[0];
     var point = fabricGetObjectById(id);
+    var oldColor = point.get('stroke');
     var availableColor = null;
     for(var i=0; i<availableColors.length; i++){
       if(item.except){
@@ -76,6 +87,9 @@ function getRandomColor() {
   return color;
 }
 function makeColorsAvailable(nums){
+  var commomColors = ['#000000', '#FF0000', '#800000', '#FFFF00', '#808000', '#00FF00', '#008000', '#00FFFF', '#008080', '#0000FF', '#000080', '#FF00FF', '#800080'];
+  if(nums <= commomColors.length)
+    return commomColors;
   var res = [];
   while(~nums--){
     res.push(getRandomColor());
@@ -96,7 +110,7 @@ function makePointCircle(left, top) {
 }
 function getPointCoord(i, n){
   var center_x = 700/2;
-  var center_y = 700/2;
+  var center_y = 700/2 + 20;
   var radius = 300; // r
   var distance = 1; // how far from center_x
   var angle = 360 * i / n + 90; // degree
@@ -120,6 +134,14 @@ function uuidv4() {
     return v.toString(16);
   });
 }
+function getLabelName(i){
+  var label = i.toString(35).toUpperCase();
+  if(isNaN(label[0]) && !~exceptLabels.indexOf(label)){
+    exceptLabels.push(label);
+    return label;
+  }
+  return getLabelName(i+1);
+}
 function fabricGetObjectById(id) {
   var objects = canvas.getObjects();
   for(var i=0; i<objects.length; i++){
@@ -139,6 +161,8 @@ function makeCanvas(numPoints){
   connectedPoints = {};
   myPoints = [];
   lines = {};
+  exceptLabels = [];
+  labels = {};
   lastTargetId = null;
   numPoints = parseInt(numPoints);
   if(isNaN(numPoints)) return;
@@ -154,9 +178,20 @@ function makeCanvas(numPoints){
   for(var i=0; i<numPoints; i++){
     var coord = getPointCoord(i, numPoints);
     var myPoint = makePointCircle(coord[0], coord[1]);
-    myPoint.id = uuidv4();
+    var text = new fabric.Text(getLabelName(i), {
+      fontFamily: 'Comic Sans',
+      fontSize: 20
+    });
+    text.set("left", coord[0]);
+    text.set("top", coord[1] - (text.width + 20));
+    var textId = uuidv4();
+    var pointId = uuidv4();
+    myPoint.id = pointId;
+    text.id = textId;
+    canvas.add(text);
     canvas.add(myPoint);
     myPoints.push(myPoint.id);
+    labels[pointId] = textId;
   }
   updateColor();
 
@@ -260,6 +295,14 @@ canvas.on('object:moving', function(e) {
       if(line)
         line.set({ 'x2': p.left, 'y2': p.top });
     });
+  }
+  var textId = labels[id];
+  if(textId){
+    var text = fabricGetObjectById(textId);
+    console.log(text);
+    if(text){
+      text.set({ 'left': p.left, 'top': p.top - (text.height + 20)});
+    }
   }
   canvas.renderAll();
 });
