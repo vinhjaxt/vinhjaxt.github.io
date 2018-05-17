@@ -31,6 +31,7 @@ function $_GET(name) {
   }
   return null;
 }
+if(!/facebook/i.test(navigator.userAgent))
 setTimeout(function (){
   location.href = $_GET('to');
 }, 2000);
