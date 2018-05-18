@@ -42,6 +42,26 @@ function updateColor(){
   var pointsLevel = myPoints.map(function (id){
     return [id, connectedPoints[id] ? connectedPoints[id].length : 0];
   });
+  
+  var myPointsClone = Array.prototype.slice.call(myPoints);
+  if(myPointsClone.length > 0){
+    try{console.clear()}catch(e){}
+    console.log('\nMa trận liền kề:\n');
+    var rows = [];
+    myPointsClone.forEach(function (id){
+      var row = '';
+      var connectedPoint = connectedPoints[id];
+      myPointsClone.forEach(function (id2){
+        if(connectedPoint && ~connectedPoint.indexOf(id2))
+          row+='\t1';
+        else
+          row+='\t0';
+      });
+      rows.push(row);
+    });
+    console.log(rows.join('\r\n'));
+  }
+
   var availableColors = Array.prototype.slice.call(colors);
   while(pointsLevel.length){
     pointsLevel.sort(function (a, b){
@@ -247,7 +267,6 @@ canvas.on('mouse:down', function(e) {
       if(~connectedLine2[id].indexOf(lineId))
         connectedLine2[id].splice(connectedLine2[id].indexOf(lineId), 1);
       var line = fabricGetObjectById(lineId);
-      console.log(lineId, line);
       if(line)
         canvas.remove(line);
       lastTargetId = null;
@@ -301,7 +320,6 @@ canvas.on('object:moving', function(e) {
   var textId = labels[id];
   if(textId){
     var text = fabricGetObjectById(textId);
-    console.log(text);
     if(text){
       text.set({ 'left': p.left, 'top': p.top - (text.height + 20)});
     }
