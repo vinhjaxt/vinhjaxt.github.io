@@ -35,6 +35,11 @@ var labels = {};
 var lines = {};
 var exceptLabels = [];
 fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
+var maxWidth = 700;
+var maxHeight = 700;
+var center_x = maxWidth/2;
+var center_y = maxHeight/2 + 20;
+var radius = 300; // r
 
 makeCanvas(6);
 
@@ -129,9 +134,6 @@ function makePointCircle(left, top) {
   return c;
 }
 function getPointCoord(i, n){
-  var center_x = 700/2;
-  var center_y = 700/2 + 20;
-  var radius = 300; // r
   var distance = 1; // how far from center_x
   var angle = 360 * i / n + 90; // degree
   var x = center_x + radius * Math.cos(-angle*Math.PI/180) * distance;
@@ -303,27 +305,42 @@ canvas.on('object:moving', function(e) {
   var p = e.target;
   if(!p || p.type != 'circle') return;
   var id = p.id;
+  var left = p.left;
+  var top = p.top;
+  if(left < 20){
+    left = 20;
+  }
+  if(top < 20){
+    top = 20;
+  }
+  if(left > maxWidth - 20){
+    left = maxWidth - 20;
+  }
+  if(top > maxHeight - 20){
+    top = maxHeight - 20;
+  }
   if(connectedLine1[id]){
     connectedLine1[id].forEach(function (lineId){
       var line = fabricGetObjectById(lineId);
       if(line)
-        line.set({ 'x1': p.left, 'y1': p.top });
+        line.set({ 'x1': left, 'y1': top });
     });
   }
   if(connectedLine2[id]){
     connectedLine2[id].forEach(function (lineId){
       var line = fabricGetObjectById(lineId);
       if(line)
-        line.set({ 'x2': p.left, 'y2': p.top });
+        line.set({ 'x2': left, 'y2': top });
     });
   }
   var textId = labels[id];
   if(textId){
     var text = fabricGetObjectById(textId);
     if(text){
-      text.set({ 'left': p.left, 'top': p.top - (text.height + 20)});
+      text.set({ 'left': left, 'top': top - (text.height + 20)});
     }
   }
+  p.set({left: left, top: top});
   canvas.renderAll();
 });
 
