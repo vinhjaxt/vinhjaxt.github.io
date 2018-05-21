@@ -81,7 +81,7 @@ if (SpeechRecognition) {
     if(final_trans)
       console.log('final: ', final_trans);
     if(document.getElementById('result'))
-      document.getElementById('result').textContent += ' '+final_transcript;
+      document.getElementById('result').textContent = final_transcript;
   };
 }
 
