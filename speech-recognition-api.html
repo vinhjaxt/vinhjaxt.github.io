@@ -16,7 +16,7 @@ var final_transcript = '';
 var recognizing = false;
 var ignore_onend;
 var start_timestamp;
-var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 if (SpeechRecognition) {
   var recognition = new SpeechRecognition();
   recognition.continuous = true;
