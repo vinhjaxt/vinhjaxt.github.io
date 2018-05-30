@@ -704,11 +704,11 @@
 		modal.style.display = "none";
 	}
 	// When the user clicks anywhere outside of the modal, close it
-	window.onclick = function(event) {
-		if (event.target == modal) {
+	window.addEventListener('click', function(event) {
+		if (event && event.target == modal) {
 			modal.style.display = "none";
 		}
-	}
+	});
 	</script>
 	<script>
 	// https://kevien.github.io/static/api/js/love.js
