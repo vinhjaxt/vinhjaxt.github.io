@@ -32,9 +32,23 @@ self.addEventListener('activate', function (e) {
 self.addEventListener('fetch', function (event) {
   console.log('Fetch event for:', event.request.url)
   event.respondWith(caches.match(event.request).then(function (response) {
-    if (/\/rpc\//i.test(event.request.url) || /\/ws\.js/i.test(event.request.url)) {
+    if (/\/data\.js/i.test(event.request.url)) {
       console.log('Force network request:', event.request.url)
-      return fetch(event.request.clone())
+      return new Promise(function (resolve, reject){
+        fetch(event.request.clone()).then(function (r) {
+          if (!r || r.status !== 200 || r.type !== 'basic') {
+            resolve(r)
+            return
+          }
+          var responseToCache = r.clone()
+          caches.open(cacheName).then().then(function (cache) {
+            cache.put(event.request, responseToCache)
+          })
+          resolve(response)
+        }).catch(function (e){
+          resolve(response)
+        })
+      })
     }
     if (response) {
       console.log('Found ', event.request.url, ' in cache')
