@@ -275,7 +275,7 @@
 			if(check==0) $('.modal-body').append('<div class="hoc-item"><p>Hê hê, được chơi rồi&nbsp; <img src="Calendar_files/img/ic.png"/>&nbsp;<img src="Calendar_files/img/ic.png"/>&nbsp;<img src="Calendar_files/img/ic.png"/></p></div>');
 			modal.style.display = "block";
 		}
-		$(function(){
+		window.addEventListener('message', function(){
 			var d = new Date();
       if (d.getHours() > 20) {
         d.setDate(d.getDate()+1);
