@@ -7,7 +7,7 @@ function postMessage (data, extra) {
 }
 
 function fetchAndCache (request, cache) {
-  return fetch(request.clone()).then(function (response) {
+  return fetch((request instanceof Request) ? request.clone() : request).then(function (response) {
     if (response && response.status === 200 && response.type === 'basic') {
       caches.open(cache || cacheName).then(function (cache) {
         cache.put(request, response)
@@ -59,6 +59,7 @@ self.addEventListener('install', function (e) {
   console.log('[ServiceWorker] Install')
   e.waitUntil(function () {
     for (var i = 0; i < cacheFirstNetLater.length; i++) {
+      console.log('FetchAndCache:', cacheFirstNetLater[i])
       fetchAndCache(cacheFirstNetLater[i])
     }
   })
