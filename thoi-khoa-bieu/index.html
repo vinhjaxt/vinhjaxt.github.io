@@ -193,7 +193,9 @@
 	<script src="Calendar_files/js/jquery.min.js"></script>
 	<script src="Calendar_files/js/strtotime.js"></script>
 	<script src="Calendar_files/js/jquery-ui-datepicker.min.js"></script>
-	<script src="data.js"></script>
+	<script>
+		document.write('<scr'+'ipt src="data.js?_=' + Math.random() + '"></scr'+'ipt>')
+	</script>
 	<script>
 		$('#calendar').datepicker({
 			inline: true,
