@@ -87,6 +87,7 @@ self.addEventListener('fetch', function (e) {
   console.log('Fetch event for:', url)
   for (var i = 0; i < ignoreRegex.length; i++) {
     if (ignoreRegex[i].test(url)) {
+      console.log('ignore:', url)
       e.respondWith(fetch(request.clone()))
       return
     }
