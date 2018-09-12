@@ -154,7 +154,7 @@
 	  // sw
     window.addEventListener('load', function () {
       if ('serviceWorker' in navigator) {
-	navigator.serviceWorker.register('sw.js?_=' + Math.random(), { scope: './' }).then(function (reg) {
+	navigator.serviceWorker.register('sw.js', { scope: './' }).then(function (reg) {
 	  console.log('sw scope:', reg.scope)
 	  reg.update().catch(function (e) { console.error(e) })
 	  reg.addEventListener('updatefound', function () {
