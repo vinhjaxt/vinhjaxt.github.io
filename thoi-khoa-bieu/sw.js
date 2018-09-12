@@ -9,7 +9,7 @@ function postMessage () {
 
 function fetchAndCache (request, cache) {
   return fetch((request instanceof Request) ? request.clone() : request).then(function (response) {
-    if (response && response.status === 200 && response.type === 'basic') {
+    if (response && response.ok && response.status === 200 && response.type === 'basic') {
       caches.open(cache || cacheName).then(function (cache) {
         cache.put(request, response)
       })
@@ -32,7 +32,7 @@ function fromCache (request) {
 function fromNetCacheLater (request) {
   return new Promise(function (resolve, reject) {
     fetchAndCache(request).then(function (response) {
-      if (response && response.status === 200 && response.type === 'basic') {
+      if (response && response.ok && response.status === 200 && response.type === 'basic') {
         resolve(response)
         return
       }
