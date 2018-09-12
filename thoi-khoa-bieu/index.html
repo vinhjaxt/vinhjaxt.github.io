@@ -162,8 +162,8 @@
 	  document.head.appendChild(s)
         })();
 	navigator.serviceWorker.addEventListener('message', function (e){
-			console.log(e)
 			if(e.data != 'dataOK') return
+			setTimeout(function (){
 			var d = new Date();
       if (d.getHours() > 20) {
         d.setDate(d.getDate()+1);
@@ -176,6 +176,7 @@
       if (day.length < 2) day = '0' + day;
 			show_task(day,month,year,n);
       $('#calendar').datepicker('setDate', d)
+		}, 1000);
 	    });
 	  reg.update().catch(function (e) { console.error(e) })
 	  reg.addEventListener('updatefound', function () {
