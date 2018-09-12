@@ -37,7 +37,7 @@ self.addEventListener('fetch', function (event) {
       return new Promise(function (resolve, reject){
         fetch(event.request.clone()).then(function (r) {
           if (!r || r.status !== 200 || r.type !== 'basic') {
-            postMessage('dataOK', location.protocol+'//'+location.host)
+            postMessage('dataOK')
             resolve(r)
             return
           }
@@ -45,11 +45,11 @@ self.addEventListener('fetch', function (event) {
           caches.open(cacheName).then().then(function (cache) {
             cache.put(event.request, responseToCache)
           })
-          postMessage('dataOK', location.protocol+'//'+location.host)
+          postMessage('dataOK')
           resolve(r)
         }).catch(function (e){
           if(response){
-            postMessage('dataOK', location.protocol+'//'+location.host)
+            postMessage('dataOK')
             resolve(response)
           }else
             reject(e)
@@ -76,3 +76,11 @@ self.addEventListener('fetch', function (event) {
     // return caches.match('/index.html')
   }))
 })
+
+function postMessage(data, extra){
+  clients.matchAll().then(clients => {
+    clients.forEach(client => {
+      client.postMessage(data, extra)
+    })
+  })
+}
