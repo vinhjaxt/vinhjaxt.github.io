@@ -10,10 +10,10 @@ function fetchAndCache (request, cache) {
   return fetch(request.clone()).then(function (response) {
     if (response && response.status === 200 && response.type === 'basic') {
       caches.open(cache || cacheName).then(function (cache) {
-        cache.put(request, response.clone())
+        cache.put(request, response)
       })
     }
-    return response
+    return response.clone()
   })
 }
 
