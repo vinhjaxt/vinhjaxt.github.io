@@ -37,6 +37,7 @@ self.addEventListener('fetch', function (event) {
       return new Promise(function (resolve, reject){
         fetch(event.request.clone()).then(function (r) {
           if (!r || r.status !== 200 || r.type !== 'basic') {
+            postMessage('dataOK')
             resolve(r)
             return
           }
@@ -44,11 +45,13 @@ self.addEventListener('fetch', function (event) {
           caches.open(cacheName).then().then(function (cache) {
             cache.put(event.request, responseToCache)
           })
+          postMessage('dataOK')
           resolve(r)
         }).catch(function (e){
-          if(response)
+          if(response){
+            postMessage('dataOK')
             resolve(response)
-          else
+          }else
             reject(e)
         })
       })
