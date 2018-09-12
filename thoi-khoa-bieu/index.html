@@ -156,6 +156,11 @@
       if ('serviceWorker' in navigator) {
 	navigator.serviceWorker.register('sw.js', { scope: './' }).then(function (reg) {
 	  console.log('sw scope:', reg.scope)
+	(function (){
+	  var s = document.createElement('script')
+	  s.src='data.js'
+	  document.head.appendChild(s)
+        })();
 	navigator.serviceWorker.addEventListener('message', function (e){
 			console.log(e)
 			if(e.data != 'dataOK') return
@@ -209,7 +214,6 @@
 	<script src="Calendar_files/js/jquery.min.js"></script>
 	<script src="Calendar_files/js/strtotime.js"></script>
 	<script src="Calendar_files/js/jquery-ui-datepicker.min.js"></script>
-	<script src="data.js"></script>
 	<script>
 		$('#calendar').datepicker({
 			inline: true,
