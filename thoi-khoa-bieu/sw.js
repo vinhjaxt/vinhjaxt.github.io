@@ -2,7 +2,10 @@ var cacheName = 'tkb-v2'
 var filesToCache = [
   '',
   'index.html',
-  '/manifest.json'
+  '/manifest.json',
+  'Calendar_files/img/1f605.png',
+  'Calendar_files/img/ic.png',
+  'Calendar_files/icon.png'
 ]
 
 self.addEventListener('install', function (e) {
