@@ -80,7 +80,7 @@ self.addEventListener('activate', function (e) {
 
 self.addEventListener('fetch', function (e) {
   console.log('Fetch event for:', e.request.url)
-  event.respondWith(defaultCache(e.request))
+  e.respondWith(defaultCache(e.request))
   if (/data\.js/.test(e.request.url))
     postMessage('dataOK')
 })
