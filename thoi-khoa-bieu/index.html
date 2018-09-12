@@ -1,335 +1,394 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="utf-8">
-	<title>Lịch thời khóa biểu</title>
-	<!-- pwa -->
-	  <meta charset="utf-8" />
-	  <link rel="shortcut icon" href="icon.png" type="image/png" />
-	  <link rel="icon" sizes="256x256" href="icon.png">
-	  <link rel="apple-touch-icon" sizes="256x256" href="icon.png">
-	  <link rel="manifest" href="manifest.json">
-	  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	  <meta name="theme-color" content="#4527A0" />
-	  <!-- apple -->
-	  <meta name="apple-mobile-web-app-capable" content="yes">
-	  <meta name="apple-mobile-web-app-status-bar-style" content="#4527A0">
-	  <meta name="apple-mobile-web-app-title" content="Thời Khóa Biểu">
-	  <link rel="apple-touch-icon" href="icon.png">
-	  <link rel="apple-touch-startup-image" href="icon.png">
-	  <link rel="apple-touch-icon" sizes="256x256" href="icon.png">
-	  <link rel="mask-icon" href="img/heart-icon.png" color="#4527A0">
-	  <meta name="msapplication-TileColor" content="#4527A0">
-	
-	<link rel="stylesheet" href="Calendar_files/css/calendar.css" media="screen">
-	<meta property="og:title" content="Lịch thời khóa biểu (CLC)" />
-	<meta property="og:description" content="Đơn giản là bóc lịch đếm ngày ra trường ^^" />
-	<meta property="og:image" content="Calendar_files/img/ogfb.png" />
-	<meta property="og:image:type" content="image/png" />
-	<meta property="og:image:width" content="908" />
-	<meta property="og:image:height" content="739" />
-	<style type="text/css">
-	body{
-		background:url(Calendar_files/img/bg.png) repeat;
-		/*width:960px;*/
-		margin:0 auto
-	}
-	.footer{
-		margin-top:100px;
-		text-align:center;
-		color:#666;
-		font:bold 14px Arial
-	}
-	.footer a{
-		color:#999;text-decoration:none
-	}
-	#wrapper{
-		padding: 50px 0 0 325px;
-	}
-	#calendar{
-		margin:25px auto;
-		width: 370px;
-	}
-	</style>
-	<meta name="robots" content="noindex,follow" />
-	<style>
-	html{
-	font-family: Arial;
-	}
-	#header{
-	font-size: 18px;
-	padding: 5px;
-	}
-	/* The Modal (background) */
-	.hoc-item{
-	}
-	.hoc-item *{
-	vertical-align: middle;
-	}
-	.modal {
-		display: none; /* Hidden by default */
-		position: fixed; /* Stay in place */
-		z-index: 1; /* Sit on top */
-		left: 0;
-		top: 0;
-		width: 100%; /* Full width */
-		height: 100%; /* Full height */
-		overflow: auto; /* Enable scroll if needed */
-		background-color: rgb(0,0,0); /* Fallback color */
-		background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-		-webkit-animation-name: fadeIn; /* Fade in the background */
-		-webkit-animation-duration: 0.4s;
-		animation-name: fadeIn;
-		animation-duration: 0.4s;
-	}
-	.icon-hacker-nu{
-		//margin: 0 auto;
-		min-height: 64px;
-		background-repeat: no-repeat;
-		background-size: 64px 64px;
-		//cursor: pointer;
-		background-image: url('Calendar_files/icon.png') !important;
-		background-repeat:no-repeat;
-		background-position: bottom right;
-		//-moz-background-size: 30%;
-		//-webkit-background-size: 30%;
-		//background-size: 30%;    
-		//margin-right: 30px;
-		z-index: 999;
-	}
-	/* Modal Content */
-	.modal-content {
-		position: fixed;
-		bottom: 0;
-		background-color: #fefefe;
-		width: 100%;
-		-webkit-animation-name: slideIn;
-		-webkit-animation-duration: 0.4s;
-		animation-name: slideIn;
-		animation-duration: 0.4s
-	}
-	/* The Close Button */
-	.close {
-		color: white;
-		float: right;
-		font-size: 28px;
-		font-weight: bold;
-	}
-	.close:hover,
-	.close:focus {
-		color: #000;
-		text-decoration: none;
-		cursor: pointer;
-	}
-	.modal-header {
-		padding: 2px 16px;
-		background-color: #5cb85c;
-		color: white;
-	}
-	.modal-body {padding: 2px 16px;}
-	.modal-footer {
-		padding: 2px 16px;
-		background-color: #5cb85c;
-		color: white;
-	}
-	/* Add Animation */
-	@-webkit-keyframes slideIn {
-		from {bottom: -300px; opacity: 0}
-		to {bottom: 0; opacity: 1}
-	}
-	@keyframes slideIn {
-		from {bottom: -300px; opacity: 0}
-		to {bottom: 0; opacity: 1}
-	}
-	@-webkit-keyframes fadeIn {
-		from {opacity: 0}
-		to {opacity: 1}
-	}
-	@keyframes fadeIn {
-		from {opacity: 0}
-		to {opacity: 1}
-	}
-	</style>
-	<script>
-	  // sw
+  <meta charset="utf-8">
+  <title>Lịch thời khóa biểu</title>
+  <!-- pwa -->
+  <meta charset="utf-8" />
+  <link rel="shortcut icon" href="icon.png" type="image/png" />
+  <link rel="icon" sizes="256x256" href="icon.png">
+  <link rel="apple-touch-icon" sizes="256x256" href="icon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#4527A0" />
+  <!-- apple -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="#4527A0">
+  <meta name="apple-mobile-web-app-title" content="Thời Khóa Biểu">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="apple-touch-startup-image" href="icon.png">
+  <link rel="apple-touch-icon" sizes="256x256" href="icon.png">
+  <link rel="mask-icon" href="img/heart-icon.png" color="#4527A0">
+  <meta name="msapplication-TileColor" content="#4527A0">
+
+  <link rel="stylesheet" href="Calendar_files/css/calendar.css" media="screen">
+  <meta property="og:title" content="Lịch thời khóa biểu (CLC)" />
+  <meta property="og:description" content="Đơn giản là bóc lịch đếm ngày ra trường ^^" />
+  <meta property="og:image" content="Calendar_files/img/ogfb.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="908" />
+  <meta property="og:image:height" content="739" />
+  <style type="text/css">
+    body {
+      background: url(Calendar_files/img/bg.png) repeat;
+      /*width:960px;*/
+      margin: 0 auto
+    }
+
+    .footer {
+      margin-top: 100px;
+      text-align: center;
+      color: #666;
+      font: bold 14px Arial
+    }
+
+    .footer a {
+      color: #999;
+      text-decoration: none
+    }
+
+    #wrapper {
+      padding: 50px 0 0 325px;
+    }
+
+    #calendar {
+      margin: 25px auto;
+      width: 370px;
+    }
+  </style>
+  <meta name="robots" content="noindex,follow" />
+  <style>
+    html {
+      font-family: Arial;
+    }
+
+    #header {
+      font-size: 18px;
+      padding: 5px;
+    }
+
+    /* The Modal (background) */
+    .hoc-item {}
+
+    .hoc-item * {
+      vertical-align: middle;
+    }
+
+    .modal {
+      display: none;
+      /* Hidden by default */
+      position: fixed;
+      /* Stay in place */
+      z-index: 1;
+      /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%;
+      /* Full width */
+      height: 100%;
+      /* Full height */
+      overflow: auto;
+      /* Enable scroll if needed */
+      background-color: rgb(0, 0, 0);
+      /* Fallback color */
+      background-color: rgba(0, 0, 0, 0.4);
+      /* Black w/ opacity */
+      -webkit-animation-name: fadeIn;
+      /* Fade in the background */
+      -webkit-animation-duration: 0.4s;
+      animation-name: fadeIn;
+      animation-duration: 0.4s;
+    }
+
+    .icon-hacker-nu {
+      //margin: 0 auto;
+      min-height: 64px;
+      background-repeat: no-repeat;
+      background-size: 64px 64px;
+      //cursor: pointer;
+      background-image: url('Calendar_files/icon.png') !important;
+      background-repeat: no-repeat;
+      background-position: bottom right;
+      //-moz-background-size: 30%;
+      //-webkit-background-size: 30%;
+      //background-size: 30%;
+      //margin-right: 30px;
+      z-index: 999;
+    }
+
+    /* Modal Content */
+    .modal-content {
+      position: fixed;
+      bottom: 0;
+      background-color: #fefefe;
+      width: 100%;
+      -webkit-animation-name: slideIn;
+      -webkit-animation-duration: 0.4s;
+      animation-name: slideIn;
+      animation-duration: 0.4s
+    }
+
+    /* The Close Button */
+    .close {
+      color: white;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .modal-header {
+      padding: 2px 16px;
+      background-color: #5cb85c;
+      color: white;
+    }
+
+    .modal-body {
+      padding: 2px 16px;
+    }
+
+    .modal-footer {
+      padding: 2px 16px;
+      background-color: #5cb85c;
+      color: white;
+    }
+
+    /* Add Animation */
+    @-webkit-keyframes slideIn {
+      from {
+        bottom: -300px;
+        opacity: 0
+      }
+
+      to {
+        bottom: 0;
+        opacity: 1
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        bottom: -300px;
+        opacity: 0
+      }
+
+      to {
+        bottom: 0;
+        opacity: 1
+      }
+    }
+
+    @-webkit-keyframes fadeIn {
+      from {
+        opacity: 0
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0
+      }
+
+      to {
+        opacity: 1
+      }
+    }
+  </style>
+  <script>
+    // sw
     window.addEventListener('load', function () {
       if ('serviceWorker' in navigator) {
-	navigator.serviceWorker.register('sw.js', { scope: './' }).then(function (reg) {
-	  console.log('sw scope:', reg.scope)
-	;(function (){
-	  var s = document.createElement('script')
-	  s.src='data.js'
-	  document.head.appendChild(s)
-        })();
-	navigator.serviceWorker.addEventListener('message', function (e){
-			if(e.data != 'dataOK') return
-			setTimeout(function (){
-			var d = new Date();
-      if (d.getHours() > 20) {
-        d.setDate(d.getDate()+1);
-      }
-      var month = '' + (d.getMonth() + 1),
-			day = '' + d.getDate(),
-			year = d.getFullYear(),
-			n = d.getDay();
-      if (month.length < 2) month = '0' + month;
-      if (day.length < 2) day = '0' + day;
-			show_task(day,month,year,n);
-      $('#calendar').datepicker('setDate', d)
-		}, 1000);
-	    });
-	  reg.update().catch(function (e) { console.error(e) })
-	  reg.addEventListener('updatefound', function () {
-	    var newWorker = reg.installing;
-	    newWorker.addEventListener('statechange', function () {
-	      switch (newWorker.state) {
-		case 'installed':
-		  if (navigator.serviceWorker.controller) {
-		    console.log('New or updated content is available.');
-		  } else {
-		    console.log('Content is now available offline!');
-		  }
-		  break;
-		case 'waiting':
-		  console.log('sw waitting to active');
-		  break;
-		case 'redundant':
-		  console.error('The installing service worker became redundant.');
-		  break;
-	      }
-	    });
-	  });
-	}).catch(function (e) {
-	  console.error('Error during service worker registration:', e);
-	});
-	navigator.serviceWorker.addEventListener('controllerchange', function () {
-	  window.location.reload();
-	});
+        navigator.serviceWorker.register('sw.js', { scope: './' }).then(function (reg) {
+          console.log('sw scope:', reg.scope)
+            ; (function () {
+              var s = document.createElement('script')
+              s.src = 'data.js'
+              document.head.appendChild(s)
+            })();
+          navigator.serviceWorker.addEventListener('message', function (e) {
+            if (e.data != 'dataOK') return
+            setTimeout(function () {
+              var d = new Date();
+              if (d.getHours() > 20) {
+                d.setDate(d.getDate() + 1);
+              }
+              var month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear(),
+                n = d.getDay();
+              if (month.length < 2) month = '0' + month;
+              if (day.length < 2) day = '0' + day;
+              show_task(day, month, year, n);
+              $('#calendar').datepicker('setDate', d)
+            }, 100);
+          });
+          reg.update().catch(function (e) { console.error(e) })
+          reg.addEventListener('updatefound', function () {
+            var newWorker = reg.installing;
+            newWorker.addEventListener('statechange', function () {
+              switch (newWorker.state) {
+                case 'installed':
+                  if (navigator.serviceWorker.controller) {
+                    console.log('New or updated content is available.');
+                  } else {
+                    console.log('Content is now available offline!');
+                  }
+                  break;
+                case 'waiting':
+                  console.log('sw waitting to active');
+                  break;
+                case 'redundant':
+                  console.error('The installing service worker became redundant.');
+                  break;
+              }
+            });
+          });
+        }).catch(function (e) {
+          console.error('Error during service worker registration:', e);
+        });
+        navigator.serviceWorker.addEventListener('controllerchange', function () {
+          window.location.reload();
+        });
       }
     })
-	</script>
+  </script>
 </head>
+
 <body>
-	<h1 style="text-transform: uppercase; color: black; font-family: Arial; text-align: center">Lịch thời khóa biểu (CLC)</h1> 
-	<div id="calendar"></div>
-	<script src="Calendar_files/js/jquery.min.js"></script>
-	<script src="Calendar_files/js/strtotime.js"></script>
-	<script src="Calendar_files/js/jquery-ui-datepicker.min.js"></script>
-	<script>
-		$('#calendar').datepicker({
-			inline: true,
-			firstDay: 1,
-			showOtherMonths: true,
-			dayNamesMin: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
-			monthNames: [ "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12" ],
-			 dateFormat: 'yy-m-d',
-		inline: true,
-		onSelect: function(dateText, inst) { 
-			var date = $(this).datepicker('getDate'),
-				day  = date.getDate(),  
-				month = date.getMonth() + 1,              
-				year =  date.getFullYear();
-				vday = date.getDay();
-				/*
-				About vday:
-				0: Chủ nhật
-				1: Thứ 2
-				.
-				.
-				6: Thứ 7
-				*/
-			show_task(day,month,year,vday);
-		},
-		
-		});
+  <h1 style="text-transform: uppercase; color: black; font-family: Arial; text-align: center">Lịch thời khóa biểu (CLC)</h1>
+  <div id="calendar"></div>
+  <script src="Calendar_files/js/jquery.min.js"></script>
+  <script src="Calendar_files/js/strtotime.js"></script>
+  <script src="Calendar_files/js/jquery-ui-datepicker.min.js"></script>
+  <script>
+    $('#calendar').datepicker({
+      inline: true,
+      firstDay: 1,
+      showOtherMonths: true,
+      dayNamesMin: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+      monthNames: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
+      dateFormat: 'yy-m-d',
+      inline: true,
+      onSelect: function (dateText, inst) {
+        var date = $(this).datepicker('getDate'),
+          day = date.getDate(),
+          month = date.getMonth() + 1,
+          year = date.getFullYear();
+        vday = date.getDay();
+        /*
+        About vday:
+        0: Chủ nhật
+        1: Thứ 2
+        .
+        .
+        6: Thứ 7
+        */
+        show_task(day, month, year, vday);
+      },
+
+    });
     function getToday() {
       var d = new Date();
       var month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      year = d.getFullYear(),
-      n = d.getDay();
+        day = '' + d.getDate(),
+        year = d.getFullYear(),
+        n = d.getDay();
       if (month.length < 2) month = '0' + month;
       if (day.length < 2) day = '0' + day;
-      return day+'-'+month+'-'+year;
+      return day + '-' + month + '-' + year;
     }
     function getTomorrow() {
       var d = new Date();
-      d.setDate(d.getDate()+1);
+      d.setDate(d.getDate() + 1);
       var month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      year = d.getFullYear(),
-      n = d.getDay();
+        day = '' + d.getDate(),
+        year = d.getFullYear(),
+        n = d.getDay();
       if (month.length < 2) month = '0' + month;
       if (day.length < 2) day = '0' + day;
-      return day+'-'+month+'-'+year;
+      return day + '-' + month + '-' + year;
     }
 
-		function show_task(d,m,y,vd){
-		$('.modal-body').empty();
-		var i,j,k,tb,tb2,time,check=0,data=[],hdate=((''+d).length < 2 ? '0'+d : d)+'-'+((''+m).length < 2 ? '0'+m : m)+'-'+y,ts=strtotime(hdate);
-			$('#header').html('Nhiệm vụ ngày '+(hdate === getToday() ? 'hôm nay' : (hdate === getTomorrow() ? 'mai' : hdate)));
-			for(k in t_d){
-				tb=t_d[k];
-				for(j in tb){
-						time=j.replace(/(\/|\\)/g,'-').split(/_/g);
-						if(strtotime(time[0]) <= ts && ts <= strtotime(time[1])){
-							tb2=tb[j];
-							for(i in tb2){
-								if(v_d[i]==vd){
-									data.push('<div class="hoc-item"><p>Tiết: '+tb2[i]+' học '+k+'&nbsp; <img src="Calendar_files/img/1f605.png"/></p></div>');
-								}
-							}
-						}
-					}
-			}
-			data.sort(function(a, b){
-			var v1=(a.replace(/[^\,\d]/g,'').split(/\,/g))[0],v2=(b.replace(/[^\,\d]/g,'').split(/\,/g))[0];
-			//alert(v1+':'+v2);
-			return v1-v2;
-			});
-			for(i in data){
-				check=1;
-				$('.modal-body').append(data[i]);
-			}
-			if(check==0) $('.modal-body').append('<div class="hoc-item"><p>Hê hê, được chơi rồi&nbsp; <img src="Calendar_files/img/ic.png"/>&nbsp;<img src="Calendar_files/img/ic.png"/>&nbsp;<img src="Calendar_files/img/ic.png"/></p></div>');
-			modal.style.display = "block";
-		}
-	</script>
-	<!-- The Modal -->
-	<div id="myModal" class="modal">
-	  <!-- Modal content -->
-	  <div class="modal-content">
-		<div class="modal-header">
-		  <span class="close">&times</span>
-		  <div id="header"></div>
-		</div>
-		<div class="modal-body icon-hacker-nu">
-		</div>
-		<div class="modal-footer">
-		  
-		</div>
-	  </div>
-	</div>
-	<script>
-	// Get the modal
-	var modal = document.getElementById('myModal');
-	// Get the <span> element that closes the modal
-	var span = document.getElementsByClassName("close")[0];
-	// When the user clicks on <span> (x), close the modal
-	span.onclick = function() {
-		modal.style.display = "none";
-	}
-	// When the user clicks anywhere outside of the modal, close it
-	window.addEventListener('click', function(event) {
-		if (event && event.target == modal) {
-			modal.style.display = "none";
-		}
-	});
-	</script>
-	<script>
-	// https://kevien.github.io/static/api/js/love.js
-!function(e,t,a){function n(){c(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"),o(),r()}function r(){for(var e=0;e<d.length;e++)d[e].alpha<=0?(t.body.removeChild(d[e].el),d.splice(e,1)):(d[e].y--,d[e].scale+=.004,d[e].alpha-=.013,d[e].el.style.cssText="left:"+d[e].x+"px;top:"+d[e].y+"px;opacity:"+d[e].alpha+";transform:scale("+d[e].scale+","+d[e].scale+") rotate(45deg);background:"+d[e].color+";z-index:99999");requestAnimationFrame(r)}function o(){var t="function"==typeof e.onclick&&e.onclick;e.onclick=function(e){t&&t(),i(e)}}function i(e){var a=t.createElement("div");a.className="heart",d.push({el:a,x:e.clientX-5,y:e.clientY-5,scale:1,alpha:1,color:s()}),t.body.appendChild(a)}function c(e){var a=t.createElement("style");a.type="text/css";try{a.appendChild(t.createTextNode(e))}catch(t){a.styleSheet.cssText=e}t.getElementsByTagName("head")[0].appendChild(a)}function s(){return"rgb("+~~(255*Math.random())+","+~~(255*Math.random())+","+~~(255*Math.random())+")"}var d=[];e.requestAnimationFrame=function(){return e.requestAnimationFrame||e.webkitRequestAnimationFrame||e.mozRequestAnimationFrame||e.oRequestAnimationFrame||e.msRequestAnimationFrame||function(e){setTimeout(e,1e3/60)}}(),n()}(window,document);
-	</script>
-	<div class="footer"><p>By <a href="#">vinhjaxt</a> from <a href="http://115.146.127.72/CMCSoft.IU.Web.Info/Home.aspx">ActVN.Edu.Vn</a>.</p></div>
+    function show_task(d, m, y, vd) {
+      $('.modal-body').empty();
+      var i, j, k, tb, tb2, time, check = 0, data = [], hdate = (('' + d).length < 2 ? '0' + d : d) + '-' + (('' + m).length < 2 ? '0' + m : m) + '-' + y, ts = strtotime(hdate);
+      $('#header').html('Nhiệm vụ ngày ' + (hdate === getToday() ? 'hôm nay' : (hdate === getTomorrow() ? 'mai' : hdate)));
+      for (k in t_d) {
+        tb = t_d[k];
+        for (j in tb) {
+          time = j.replace(/(\/|\\)/g, '-').split(/_/g);
+          if (strtotime(time[0]) <= ts && ts <= strtotime(time[1])) {
+            tb2 = tb[j];
+            for (i in tb2) {
+              if (v_d[i] == vd) {
+                data.push('<div class="hoc-item"><p>Tiết: ' + tb2[i] + ' học ' + k + '&nbsp; <img src="Calendar_files/img/1f605.png"/></p></div>');
+              }
+            }
+          }
+        }
+      }
+      data.sort(function (a, b) {
+        var v1 = (a.replace(/[^\,\d]/g, '').split(/\,/g))[0], v2 = (b.replace(/[^\,\d]/g, '').split(/\,/g))[0];
+        //alert(v1+':'+v2);
+        return v1 - v2;
+      });
+      for (i in data) {
+        check = 1;
+        $('.modal-body').append(data[i]);
+      }
+      if (check == 0) $('.modal-body').append('<div class="hoc-item"><p>Hê hê, được chơi rồi&nbsp; <img src="Calendar_files/img/ic.png"/>&nbsp;<img src="Calendar_files/img/ic.png"/>&nbsp;<img src="Calendar_files/img/ic.png"/></p></div>');
+      modal.style.display = "block";
+    }
+  </script>
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close">&times</span>
+        <div id="header"></div>
+      </div>
+      <div class="modal-body icon-hacker-nu">
+      </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+  <script>
+    // Get the modal
+    var modal = document.getElementById('myModal');
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+      modal.style.display = "none";
+    }
+    // When the user clicks anywhere outside of the modal, close it
+    window.addEventListener('click', function (event) {
+      if (event && event.target == modal) {
+        modal.style.display = "none";
+      }
+    });
+  </script>
+  <script>
+    // https://kevien.github.io/static/api/js/love.js
+    !function (e, t, a) { function n() { c(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"), o(), r() } function r() { for (var e = 0; e < d.length; e++)d[e].alpha <= 0 ? (t.body.removeChild(d[e].el), d.splice(e, 1)) : (d[e].y-- , d[e].scale += .004, d[e].alpha -= .013, d[e].el.style.cssText = "left:" + d[e].x + "px;top:" + d[e].y + "px;opacity:" + d[e].alpha + ";transform:scale(" + d[e].scale + "," + d[e].scale + ") rotate(45deg);background:" + d[e].color + ";z-index:99999"); requestAnimationFrame(r) } function o() { var t = "function" == typeof e.onclick && e.onclick; e.onclick = function (e) { t && t(), i(e) } } function i(e) { var a = t.createElement("div"); a.className = "heart", d.push({ el: a, x: e.clientX - 5, y: e.clientY - 5, scale: 1, alpha: 1, color: s() }), t.body.appendChild(a) } function c(e) { var a = t.createElement("style"); a.type = "text/css"; try { a.appendChild(t.createTextNode(e)) } catch (t) { a.styleSheet.cssText = e } t.getElementsByTagName("head")[0].appendChild(a) } function s() { return "rgb(" + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + "," + ~~(255 * Math.random()) + ")" } var d = []; e.requestAnimationFrame = function () { return e.requestAnimationFrame || e.webkitRequestAnimationFrame || e.mozRequestAnimationFrame || e.oRequestAnimationFrame || e.msRequestAnimationFrame || function (e) { setTimeout(e, 1e3 / 60) } }(), n() }(window, document);
+  </script>
+  <div class="footer">
+    <p>By <a href="#">vinhjaxt</a> from <a href="http://115.146.127.72/CMCSoft.IU.Web.Info/Home.aspx">ActVN.Edu.Vn</a>.</p>
+  </div>
 </body>
+
 </html>
