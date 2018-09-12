@@ -1,20 +1,66 @@
-var cacheName = 'tkb-v2'
-var filesToCache = [
+function postMessage (data, extra) {
+  clients.matchAll().then(function (clients) {
+    clients.forEach(function (client) {
+      client.postMessage(data, extra)
+    })
+  })
+}
+
+function fetchAndCache (request, cache) {
+  return fetch(request.clone()).then(function (response) {
+    if (response && response.status === 200 && response.type === 'basic') {
+      caches.open(cache || cacheName).then(function (cache) {
+        cache.put(request, response.clone())
+      })
+    }
+    return response
+  })
+}
+
+function fromCacheNetLater (request) {
+  caches.match(request).then(function (response) {
+    var netRes = fetchAndCache(request)
+    if (response)
+      return response
+    return netRes
+  })
+}
+function fromCache (request) {
+  return caches.match(request)
+}
+function fromNetCacheLater (request) {
+  return new Promise(function (resolve, reject) {
+    fetchAndCache(request).then(function (response) {
+      if (response && response.status === 200 && response.type === 'basic') {
+        resolve(response)
+        return
+      }
+      resolve(fromCache(request))
+    }).catch(function (e) {
+      resolve(fromCache(request))
+    })
+  })
+}
+//
+
+var cacheName = 'tkb-v2.1'
+var cacheFirstNetLater = [
   '',
   'index.html',
-  '/manifest.json',
+  'manifest.json',
   'Calendar_files/img/1f605.png',
   'Calendar_files/img/ic.png',
-  'Calendar_files/icon.png'
+  'Calendar_files/icon.png',
+  'data.js'
 ]
+var defaultCache = fromCacheNetLater
 
 self.addEventListener('install', function (e) {
   console.log('[ServiceWorker] Install')
   e.waitUntil(function () {
-    caches.open(cacheName).then(function (cache) {
-      console.log('[ServiceWorker] Caching app shell')
-      return cache.addAll(filesToCache)
-    })
+    for (var i = 0; i < cacheFirstNetLater.length; i++) {
+      fetchAndCache(cacheFirstNetLater[i])
+    }
   })
   return self.skipWaiting()
 })
@@ -32,58 +78,9 @@ self.addEventListener('activate', function (e) {
   return self.clients.claim()
 })
 
-self.addEventListener('fetch', function (event) {
-  console.log('Fetch event for:', event.request.url)
-  event.respondWith(caches.match(event.request).then(function (response) {
-    if (/\/data\.js/i.test(event.request.url)) {
-      console.log('Force network request:', event.request.url)
-      return new Promise(function (resolve, reject){
-        fetch(event.request.clone()).then(function (r) {
-          if (!r || r.status !== 200 || r.type !== 'basic') {
-            postMessage('dataOK')
-            resolve(r)
-            return
-          }
-          var responseToCache = r.clone()
-          caches.open(cacheName).then().then(function (cache) {
-            cache.put(event.request, responseToCache)
-          })
-          postMessage('dataOK')
-          resolve(r)
-        }).catch(function (e){
-          if(response){
-            postMessage('dataOK')
-            resolve(response)
-          }else
-            reject(e)
-        })
-      })
-    }
-    if (response) {
-      console.log('Found ', event.request.url, ' in cache')
-      return response
-    }
-    console.log('Network request:', event.request.url)
-    return fetch(event.request.clone()).then(function (response) {
-      if (!response || response.status !== 200 || response.type !== 'basic') {
-        return response
-      }
-      var responseToCache = response.clone()
-      caches.open(cacheName).then().then(function (cache) {
-        cache.put(event.request, responseToCache)
-      })
-      return response
-    })
-  }).catch(function (error) {
-    console.error('Fetch:', error)
-    // return caches.match('/index.html')
-  }))
+self.addEventListener('fetch', function (e) {
+  console.log('Fetch event for:', e.request.url)
+  event.respondWith(defaultCache(e.request))
+  if (/data\.js/.test(e.request.url))
+    postMessage('dataOK')
 })
-
-function postMessage(data, extra){
-  clients.matchAll().then(function (clients) {
-    clients.forEach(function (client) {
-      client.postMessage(data, extra)
-    })
-  })
-}
