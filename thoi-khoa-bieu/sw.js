@@ -81,8 +81,8 @@ self.addEventListener('fetch', function (event) {
 })
 
 function postMessage(data, extra){
-  clients.matchAll().then(clients => {
-    clients.forEach(client => {
+  clients.matchAll().then(function (clients) {
+    clients.forEach(function (client) {
       client.postMessage(data, extra)
     })
   })
