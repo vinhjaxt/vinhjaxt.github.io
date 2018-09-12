@@ -54,7 +54,7 @@ var cacheFirstNetLater = [
   'data.js'
 ]
 var ignoreRegex = [
-  'sw\\.js'
+  /sw\.js/i
 ]
 var defaultCache = fromCacheNetLater
 
@@ -85,11 +85,10 @@ self.addEventListener('fetch', function (e) {
   var url = request.url
   console.log('Fetch event for:', url)
   for (var i = 0; i < ignoreRegex.length; i++) {
-    var regex = new RegExp(ignoreRegex[i])
-    if (regex.test(url))
-      return fetch(request.clone())
+    if (ignoreRegex[i].test(url)) {
+      e.respondWith(fetch(request.clone()))
+      return
+    }
   }
   e.respondWith(defaultCache(request))
-  if (/data\.js/.test(url))
-    postMessage('dataOK')
 })
