@@ -18,7 +18,7 @@ function fetchAndCache (request, cache) {
 }
 
 function fromCacheNetLater (request) {
-  caches.match(request).then(function (response) {
+  return caches.match(request).then(function (response) {
     var netRes = fetchAndCache(request)
     if (response)
       return response
