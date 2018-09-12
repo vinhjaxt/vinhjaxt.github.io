@@ -1,7 +1,8 @@
-function postMessage (data, extra) {
+function postMessage () {
+  var args = arguments
   clients.matchAll().then(function (clients) {
     clients.forEach(function (client) {
-      client.postMessage(data, extra)
+      client.postMessage.apply(client, args)
     })
   })
 }
