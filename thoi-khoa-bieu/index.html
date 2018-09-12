@@ -159,6 +159,22 @@
 	  reg.update().catch(function (e) { console.error(e) })
 	  reg.addEventListener('updatefound', function () {
 	    var newWorker = reg.installing;
+	    newWorker.addEventListener('message', function (e){
+			console.log(e)
+			if(e.data != 'dataOK') return
+			var d = new Date();
+      if (d.getHours() > 20) {
+        d.setDate(d.getDate()+1);
+      }
+      var month = '' + (d.getMonth() + 1),
+			day = '' + d.getDate(),
+			year = d.getFullYear(),
+			n = d.getDay();
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+			show_task(day,month,year,n);
+      $('#calendar').datepicker('setDate', d)
+	    });
 	    newWorker.addEventListener('statechange', function () {
 	      switch (newWorker.state) {
 		case 'installed':
@@ -273,22 +289,6 @@
 			if(check==0) $('.modal-body').append('<div class="hoc-item"><p>Hê hê, được chơi rồi&nbsp; <img src="Calendar_files/img/ic.png"/>&nbsp;<img src="Calendar_files/img/ic.png"/>&nbsp;<img src="Calendar_files/img/ic.png"/></p></div>');
 			modal.style.display = "block";
 		}
-		window.addEventListener('message', function (e){
-			console.log(e)
-			if(e.data != 'dataOK') return
-			var d = new Date();
-      if (d.getHours() > 20) {
-        d.setDate(d.getDate()+1);
-      }
-      var month = '' + (d.getMonth() + 1),
-			day = '' + d.getDate(),
-			year = d.getFullYear(),
-			n = d.getDay();
-      if (month.length < 2) month = '0' + month;
-      if (day.length < 2) day = '0' + day;
-			show_task(day,month,year,n);
-      $('#calendar').datepicker('setDate', d)
-		});
 	</script>
 	<!-- The Modal -->
 	<div id="myModal" class="modal">
