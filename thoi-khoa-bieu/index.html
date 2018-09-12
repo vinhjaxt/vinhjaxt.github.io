@@ -156,10 +156,7 @@
       if ('serviceWorker' in navigator) {
 	navigator.serviceWorker.register('sw.js', { scope: './' }).then(function (reg) {
 	  console.log('sw scope:', reg.scope)
-	  reg.update().catch(function (e) { console.error(e) })
-	  reg.addEventListener('updatefound', function () {
-	    var newWorker = reg.installing;
-	    newWorker.addEventListener('message', function (e){
+	navigator.serviceWorker.addEventListener('message', function (e){
 			console.log(e)
 			if(e.data != 'dataOK') return
 			var d = new Date();
@@ -175,6 +172,9 @@
 			show_task(day,month,year,n);
       $('#calendar').datepicker('setDate', d)
 	    });
+	  reg.update().catch(function (e) { console.error(e) })
+	  reg.addEventListener('updatefound', function () {
+	    var newWorker = reg.installing;
 	    newWorker.addEventListener('statechange', function () {
 	      switch (newWorker.state) {
 		case 'installed':
