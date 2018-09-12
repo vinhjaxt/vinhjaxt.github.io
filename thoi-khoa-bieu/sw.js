@@ -44,9 +44,12 @@ self.addEventListener('fetch', function (event) {
           caches.open(cacheName).then().then(function (cache) {
             cache.put(event.request, responseToCache)
           })
-          resolve(response)
+          resolve(r)
         }).catch(function (e){
-          resolve(response)
+          if(response)
+            resolve(response)
+          else
+            reject(e)
         })
       })
     }
