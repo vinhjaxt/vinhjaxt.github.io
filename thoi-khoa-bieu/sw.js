@@ -60,12 +60,10 @@ var defaultCache = fromCacheNetLater
 
 self.addEventListener('install', function (e) {
   console.log('[ServiceWorker] Install')
-  e.waitUntil(function () {
-    for (var i = 0; i < cacheFirstNetLater.length; i++) {
-      console.log('FetchAndCache:', cacheFirstNetLater[i])
-      fetchAndCache(cacheFirstNetLater[i])
-    }
-  })
+  for (var i = 0; i < cacheFirstNetLater.length; i++) {
+    console.log('FetchAndCache:', cacheFirstNetLater[i])
+    fetchAndCache(cacheFirstNetLater[i])
+  }
   return self.skipWaiting()
 })
 
