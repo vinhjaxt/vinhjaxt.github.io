@@ -53,6 +53,9 @@ var cacheFirstNetLater = [
   'Calendar_files/icon.png',
   'data.js'
 ]
+var ignoreRegex = [
+  'sw\\.js'
+]
 var defaultCache = fromCacheNetLater
 
 self.addEventListener('install', function (e) {
@@ -80,8 +83,15 @@ self.addEventListener('activate', function (e) {
 })
 
 self.addEventListener('fetch', function (e) {
-  console.log('Fetch event for:', e.request.url)
-  e.respondWith(defaultCache(e.request))
-  if (/data\.js/.test(e.request.url))
+  var request = e.request
+  var url = request.url
+  console.log('Fetch event for:', url)
+  for (var i = 0; i < ignoreRegex.length; i++) {
+    var regex = new RegExp(ignoreRegex[i])
+    if (regex.test(url))
+      return fetch(request.clone())
+  }
+  e.respondWith(defaultCache(request))
+  if (/data\.js/.test(url))
     postMessage('dataOK')
 })
