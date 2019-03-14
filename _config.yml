@@ -4,16 +4,18 @@ name: vinhjaxt blog
 description: vinhjaxt blog about security
 
 # url is currently only used only for the RSS feed in feed.xml
-url: https://vinhjaxt.github.io/blog
+url: https://vinhjaxt.github.io
+# url: https://vinhjaxt.github.io/blog
 
 # baseurl will often be '', but for a project page on gh-pages, it needs to
 # be the project name.
 # *** IMPORTANT: If your local "jekyll serve" throws errors change this to '' or
 #     run it like so: jekyll serve --baseurl=''
-baseurl: /blog
+baseurl: ''
+# baseurl: '/blog'
 
 # These can be '' to hide the Github or Gitlab nav buttons
-github: 'vinhjaxt/blog'
+github: 'vinhjaxt'
 gitlab: ''
 
 # Set this to your UA-# value, or '' to disable the block completely
