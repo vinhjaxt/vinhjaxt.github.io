@@ -1,7 +1,7 @@
 {
-  "short_name": "Thời khóa biểu",
-  "name": "Thời khóa biểu",
-  "start_url": "/thoi-khoa-bieu/",
+  "short_name": "Tools",
+  "name": "Tools",
+  "start_url": "/tools/js-tool-encode-decode.html",
   "theme_color": "#4527A0",
   "background_color": "#eeeeee",
   "icons": [
