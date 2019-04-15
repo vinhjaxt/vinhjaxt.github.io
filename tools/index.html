@@ -2,19 +2,19 @@
 <!-- Thank to winginx.com -->
 <html>
 	<head>
-		<title>Index of vinhjaxt.github.io</title>
+		<title>Tools | vinhjaxt.github.io</title>
 		<meta charset="utf-8" />
 		<meta content="width=device-width, initial-scale=1" name="viewport" />
-		<link href="https://fonts.googleapis.com/css?family=Baloo" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 		<style type="text/css">
 		html, body {
-			width: 100vw;
-			height: 100vh;
+			width: 100%;
+			height: 100%;
 			margin: 0;
 			padding: 0;
 		}
 		body {
-			font-family: Baloo, sans-serif;
+			font-family: 'Open Sans', sans-serif;
 			font-weight: 400;
 			display: flex;
 			align-items: center;
@@ -66,23 +66,17 @@
 	</head>
 	<body>
 		<div>
-			<h1>Xin chào!</h1>
-			<a href="start/"><h2>Let's Start!</h2></a>
-			<h3>Có thể bạn sẽ cần:</h3>
+			<h1>Tools - vinhjaxt.github.io</h1>
 			<ol class="text-left">
 				<a href="/thoi-khoa-bieu/"><li>Thời khóa biểu CLC</li></a>
-				<a href="js-tool-encode-decode.html"><li>JS tool encode and decode string</li></a>
-				<a href="js-checker.html"><li>JS syntax and runtime errors checker</li></a>
-				<a href="giai-he-pt-tuyen-tinh-mxn.html"><li>Giải hệ phương trình tuyến tính</li></a>
+				<a href="strings-tools.html"><li>Strings tools</li></a>
+				<!-- <a href="js-checker.html"><li>JS syntax and runtime errors checker</li></a> -->
+				<!-- <a href="giai-he-pt-tuyen-tinh-mxn.html"><li>Giải hệ phương trình tuyến tính</li></a> -->
 			</ol>
 			<a class="small" href="#">&copy; <span id="date(Y)"></span> by vinhjaxt</a>
 		</div>
 		<script type="text/javascript">
 			document.getElementById('date(Y)').innerText=''+new Date().getFullYear();
 		</script>
-	<script>
-	// https://kevien.github.io/static/api/js/love.js
-!function(e,t,a){function n(){c(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: fixed;}.heart:after{top: -5px;}.heart:before{left: -5px;}"),o(),r()}function r(){for(var e=0;e<d.length;e++)d[e].alpha<=0?(t.body.removeChild(d[e].el),d.splice(e,1)):(d[e].y--,d[e].scale+=.004,d[e].alpha-=.013,d[e].el.style.cssText="left:"+d[e].x+"px;top:"+d[e].y+"px;opacity:"+d[e].alpha+";transform:scale("+d[e].scale+","+d[e].scale+") rotate(45deg);background:"+d[e].color+";z-index:99999");requestAnimationFrame(r)}function o(){var t="function"==typeof e.onclick&&e.onclick;e.onclick=function(e){t&&t(),i(e)}}function i(e){var a=t.createElement("div");a.className="heart",d.push({el:a,x:e.clientX-5,y:e.clientY-5,scale:1,alpha:1,color:s()}),t.body.appendChild(a)}function c(e){var a=t.createElement("style");a.type="text/css";try{a.appendChild(t.createTextNode(e))}catch(t){a.styleSheet.cssText=e}t.getElementsByTagName("head")[0].appendChild(a)}function s(){return"rgb("+~~(255*Math.random())+","+~~(255*Math.random())+","+~~(255*Math.random())+")"}var d=[];e.requestAnimationFrame=function(){return e.requestAnimationFrame||e.webkitRequestAnimationFrame||e.mozRequestAnimationFrame||e.oRequestAnimationFrame||e.msRequestAnimationFrame||function(e){setTimeout(e,1e3/60)}}(),n()}(window,document);
-	</script>
 	</body>
 </html>
