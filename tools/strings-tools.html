@@ -3574,6 +3574,14 @@ function b64toBA(s) {
 **/
 !function(e,r){"object"==typeof module&&module.exports?(module.exports=r(),module.exports.default=module.exports):e.xmorse=r()}("undefined"!=typeof window?window:this,function(){function e(e){return e=e||{},[e.space||"/",e.short||".",e.long||"-"]}function r(e){for(var r=[],n=0;n<e.length;n++)r[n]=("00"+e.charCodeAt(n).toString(16)).slice(-4);return r=r.join(""),r=parseInt(r,16).toString(2)}function n(n,o){o=e(o);var t=[];n=n.replace(/\s+/g,"").toLocaleUpperCase().split("");for(var u,a,i=0,c=n.length;i<c;i++)u=n[i],a=p[u],a||(a=r(u)),t.push(a.replace(/0/g,o[1]).replace(/1/g,o[2]));return t.join(o[0])}function o(e){return e=parseInt(e,2),isNaN(e)?"":unescape("%u"+e.toString(16))}function t(r,n){n=e(n);var t=[];r=r.split(n[0]);for(var p,a,i=0,c=r.length;i<c;i++)p=r[i].replace(/\s+/g,"").replace(new RegExp("\\"+n[1],"g"),"0").replace(new RegExp("\\"+n[2],"g"),"1"),a=u[p],a||(a=o(p)),t.push(a);return t.join("")}var p={A:"01",B:"1000",C:"1010",D:"100",E:"0",F:"0010",G:"110",H:"0000",I:"00",J:"0111",K:"101",L:"0100",M:"11",N:"10",O:"111",P:"0110",Q:"1101",R:"010",S:"000",T:"1",U:"001",V:"0001",W:"011",X:"1001",Y:"1011",Z:"1100",0:"11111",1:"01111",2:"00111",3:"00011",4:"00001",5:"00000",6:"10000",7:"11000",8:"11100",9:"11110",".":"010101",",":"110011","?":"001100","'":"011110","!":"101011","/":"10010","(":"10110",")":"101101","&":"01000",":":"111000",";":"101010","=":"10001","+":"01010","-":"100001",_:"001101",'"':"010010",$:"0001001","@":"011010"},u={};for(var a in p)u[p[a]]=a;return{encode:n,decode:t}});
 
+// undos
+window.undo = false
+window.undopop = false
+window.undos = []
+function changeText(t, disableOnchange){
+	document.code.text.value = t
+	if(!disableOnchange) document.code.text.onchange()
+}
 </script>
 
 </head>
@@ -3582,53 +3590,55 @@ function b64toBA(s) {
 	<form action="" method="post" name="code" onsubmit="return false();">
 		<fieldset>
 			<legend>INPUT - OUTPUT:</legend>
-			<textarea rows="6" class="input" name="text" placeholder="" onchange="setTimeout(function (){ check_hash(clean(document.code.text.value))},200);" onpaste="setTimeout(function (){ check_hash(document.code.text.value)},200);"></textarea><br />
+			<textarea rows="6" class="input" name="text" placeholder="" onchange="window.undopop = false;window.undo = window.undo?false:(window.undos.push(document.code.text.value),window.undopop = true,false);setTimeout(function (){ check_hash(clean(document.code.text.value))},200);" onpaste="setTimeout(function (){ if(document.code.text.value) check_hash(document.code.text.value)},200);"></textarea><br />
 		</fieldset>
 	</form>
-	<input type="button" onclick="document.code.text.value=he.encode(document.code.text.value,{'encodeEverything':true});" value="Htmlentities" /><input type="button" onclick="document.code.text.value=he.decode(document.code.text.value);" value="Htmlentity_decode" /><br />
+	<input type="button" onclick="window.undo=true;setTimeout(function (){ window.undo=false; },200);window.undopop=window.undopop?void window.undos.pop():false;document.code.text.value=window.undos.pop()||'';" value="Undo" /><br/>
 
-	<input type="button" onclick="document.code.text.value=base64_encode(document.code.text.value);" value="EnBase64" /><input type="button" onclick="document.code.text.value=decodeBase64(clean(document.code.text.value));" value="DeBase64" /><br />
+	<input type="button" onclick="changeText(he.encode(document.code.text.value,{'encodeEverything':true}));" value="Htmlentities" /><input type="button" onclick="changeText(he.decode(document.code.text.value));" value="Htmlentity_decode" /><br />
 
-	<input type="button" onclick="document.code.text.value=b64tohex(document.code.text.value);" value="Base64 to Hex" /><input type="button" onclick="document.code.text.value=hex2b64(clean(document.code.text.value));" value="Hex to Base64" /><br />
+	<input type="button" onclick="changeText(base64_encode(document.code.text.value));" value="EnBase64" /><input type="button" onclick="changeText(decodeBase64(clean(document.code.text.value)));" value="DeBase64" /><br />
 
-	<input type="button" onclick="document.code.text.value=urlencode(document.code.text.value);" value="EnURL" /> - 
-	<input type="button" onclick="document.code.text.value=urldecode(document.code.text.value);" value="DeURL" /><br />
+	<input type="button" onclick="changeText(b64tohex(document.code.text.value));" value="Base64 to Hex" /><input type="button" onclick="changeText(hex2b64(clean(document.code.text.value)));" value="Hex to Base64" /><br />
 
-	<input type="button" onclick="document.code.text.value=utf8_encode(document.code.text.value);" value="EnUTF-8" /> -
-	<input type="button" onclick="document.code.text.value=utf8_decode(document.code.text.value);" value="DeUTF-8" /><br />
+	<input type="button" onclick="changeText(urlencode(document.code.text.value));" value="EnURL" /> - 
+	<input type="button" onclick="changeText(urldecode(document.code.text.value));" value="DeURL" /><br />
 
-	<input type="button" onclick="document.code.text.value=reverse(document.code.text.value);" value="Reverse" /><br />
+	<input type="button" onclick="changeText(utf8_encode(document.code.text.value));" value="EnUTF-8" /> -
+	<input type="button" onclick="changeText(utf8_decode(document.code.text.value));" value="DeUTF-8" /><br />
 
-	<input type="button" onclick="document.code.text.value=RegExp.escape(document.code.text.value);" value="RegExp Escape" /><br />
+	<input type="button" onclick="changeText(reverse(document.code.text.value));" value="Reverse" /><br />
 
-	<input type="button" onclick="document.code.text.value=jsEscape(document.code.text.value);" value="jsEscape" /> - 
-	<input type="button" onclick="document.code.text.value=jsUnescape(document.code.text.value)" value="jsUnescape" /><br/>
+	<input type="button" onclick="changeText(RegExp.escape(document.code.text.value));" value="RegExp Escape" /><br />
 
-	<input type="button" onclick="document.code.text.value=(document.code.text.value).tohex();" value="EnHEX" /> - 
-	<input type="button" onclick="document.code.text.value=utf8_decode(decodeHex(clean(document.code.text.value)));" value="DeHEX" /><br/>
+	<input type="button" onclick="changeText(jsEscape(document.code.text.value));" value="jsEscape" /> - 
+	<input type="button" onclick="changeText(jsUnescape(document.code.text.value));" value="jsUnescape" /><br/>
 
-	<input type="button" onclick="document.code.text.value=(document.code.text.value).todec();" value="EnDec" /> - 
-	<input type="button" onclick="document.code.text.value=(clean(document.code.text.value)).d2s();" value="DeDec" /><br/> 
+	<input type="button" onclick="changeText((document.code.text.value).tohex());" value="EnHEX" /> - 
+	<input type="button" onclick="changeText(utf8_decode(decodeHex(clean(document.code.text.value))));" value="DeHEX" /><br/>
 
-	<input type="button" onclick="document.code.text.value=(document.code.text.value).tobin();" value="EnBin" /> - 
-	<input type="button" onclick="document.code.text.value=(clean(document.code.text.value)).b2s();" value="DeBin" /><br/> 
+	<input type="button" onclick="changeText((document.code.text.value).todec());" value="EnDec" /> - 
+	<input type="button" onclick="changeText((clean(document.code.text.value)).d2s());" value="DeDec" /><br/> 
 
-	<input type="button" onclick="document.code.text.value=(document.code.text.value).tooct();" value="EnOct" /> - 
-	<input type="button" onclick="document.code.text.value=(clean(document.code.text.value)).o2s();" value="DeOct" /><br/> 
+	<input type="button" onclick="changeText((document.code.text.value).tobin());" value="EnBin" /> - 
+	<input type="button" onclick="changeText((clean(document.code.text.value)).b2s());" value="DeBin" /><br/> 
 
-	<input type="button" onclick="document.code.text.value=xmorse.encode(document.code.text.value,{ space: ' ', long: '-', short: '*' });" value="EnMorse" /> - 
-	<input type="button" onclick="document.code.text.value=xmorse.decode(document.code.text.value,{ space: ' ', long: '-', short: '*' });" value="DeMorse" /><br/> 
+	<input type="button" onclick="changeText((document.code.text.value).tooct());" value="EnOct" /> - 
+	<input type="button" onclick="changeText((clean(document.code.text.value)).o2s());" value="DeOct" /><br/> 
 
-	<input type="button" onclick="document.code.text.value=encodeMd5(document.code.text.value);" value="EnMD5" /><br/>
+	<input type="button" onclick="changeText(xmorse.encode(document.code.text.value,{ space: ' ', long: '-', short: '*' }));" value="EnMorse" /> - 
+	<input type="button" onclick="changeText(xmorse.decode(document.code.text.value,{ space: ' ', long: '-', short: '*' }));" value="DeMorse" /><br/> 
+
+	<input type="button" onclick="changeText(encodeMd5(document.code.text.value));" value="EnMD5" /><br/>
 
 	<input type="button" onclick="check_hash(document.code.text.value);" value="DetectHash" /><br/>
 
-	<input type="button" onclick="document.code.text.value=clean(document.code.text.value,prompt('Nhập các ký tự muốn xóa (regexp without //g):','\\s|\\r|\\n'));" value="CleanString" /><br/>
+	<input type="button" onclick="changeText(clean(document.code.text.value,prompt('Nhập các ký tự muốn xóa (regexp without //g):','\\s|\\r|\\n')));" value="CleanString" /><br/>
 
-	<input type="button" onclick="document.code.text.value=makeup(document.code.text.value,prompt('Số kí tự muốn tách ra:\n8(Bin), 3(Dec,Oct), 2(Hex)','1'),prompt('Nhập ký tự phân cách\n(mặc định là dấu cách):',''));" value="SplitString" /><br/>
+	<input type="button" onclick="changeText(makeup(document.code.text.value,prompt('Số kí tự muốn tách ra:\n8(Bin), 3(Dec,Oct), 2(Hex)','1'),prompt('Nhập ký tự phân cách\n(mặc định là dấu cách):','')));" value="SplitString" /><br/>
 
-	<input type="button" onclick="document.code.text.value=vEncrypt(document.code.text.value);" value="EnCrypt" /> - 
-	<input type="button" onclick="document.code.text.value=vDecrypt(document.code.text.value);" value="DeCrypt" /><br/>
+	<input type="button" onclick="changeText(vEncrypt(document.code.text.value));" value="EnCrypt" /> - 
+	<input type="button" onclick="changeText(vDecrypt(document.code.text.value));" value="DeCrypt" /><br/>
 	<select id="encryptType"><option value="">Encrypt type</option></select>
 	<input id="passphrase" type="text" title="Pass Phrase" value="" autocomplete="off" placeholder="Pass Phrase"/>
 </div>
