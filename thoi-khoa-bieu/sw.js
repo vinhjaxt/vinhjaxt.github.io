@@ -9,9 +9,15 @@ function postMessage () {
 }
 
 function fetchAndCache (request, cache) {
-  var newRequest = (request instanceof Request) ? request.clone() : request
-  if (newRequest.url && newRequest.url.endsWith('/data.js')) {
-    newRequest.url += '?_=' + Math.random()
+  var newRequest
+  if (request instanceof Request) {
+    if (request.url.endsWith('/data.js')) {
+      newRequest = new Request(request.url + '?_=' + Math.random(), request)
+    } else {
+      newRequest = request.clone()
+    }
+  } else {
+    newRequest = request
   }
   return fetch(newRequest).then(function (response) {
     if (response && response.ok && response.status === 200 && response.type === 'basic') {
