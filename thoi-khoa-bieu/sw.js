@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 function postMessage () {
   var args = arguments
   clients.matchAll().then(function (clients) {
@@ -8,7 +9,11 @@ function postMessage () {
 }
 
 function fetchAndCache (request, cache) {
-  return fetch((request instanceof Request) ? request.clone() : request).then(function (response) {
+  var newRequest = (request instanceof Request) ? request.clone() : request
+  if (newRequest.url && newRequest.url.endsWith('/data.js')) {
+    newRequest.url += '?_=' + Math.random()
+  }
+  return fetch(newRequest).then(function (response) {
     if (response && response.ok && response.status === 200 && response.type === 'basic') {
       caches.open(cache || cacheName).then(function (cache) {
         cache.put(request, response)
@@ -21,14 +26,14 @@ function fetchAndCache (request, cache) {
 function fromCacheNetLater (request) {
   return caches.match(request).then(function (response) {
     var netRes = fetchAndCache(request)
-    if (response)
-      return response
+    if (response) return response
     return netRes
   })
 }
 function fromCache (request) {
   return caches.match(request)
 }
+// eslint-disable-next-line no-unused-vars
 function fromNetCacheLater (request) {
   return new Promise(function (resolve, reject) {
     fetchAndCache(request).then(function (response) {
@@ -44,7 +49,7 @@ function fromNetCacheLater (request) {
 }
 //
 
-var cacheName = 'tkb-v2.1'
+var cacheName = 'tkb-v2.2'
 var cacheFirstNetLater = [
   '',
   'index.html',
