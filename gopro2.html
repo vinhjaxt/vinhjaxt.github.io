@@ -1,7 +1,7 @@
 <h1>Go Pro2</h1>
 <script>
   var cp = require('child_process')
-  var child = cp.spawn('calc.exe'], { detached: true })
+  var child = cp.spawn('calc.exe', { detached: true })
   child.unref()
   // require('electron').remote.getCurrentWindow().destroy()
 </script>
