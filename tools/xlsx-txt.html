@@ -163,7 +163,7 @@
             error: [],
             pending: ''
           }
-          const parts = []
+          const parts = ["\ufeff"]
           for (let i = 0; i < files.length; i++) {
             const file = files[i]
             try {
@@ -178,7 +178,7 @@
             }
           }
           this.state.pending = ''
-          if (!parts.length) return
+          if (parts.length === 1) return
           // download
           const downloadURL = URL.createObjectURL(new Blob(parts, {
             type: 'application/octet-stream'
