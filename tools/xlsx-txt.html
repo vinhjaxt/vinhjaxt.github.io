@@ -50,7 +50,8 @@
               <div class="form-group">
                 <input type="file" name="files[]" id="js-upload-files" multiple accept=".xlsx,.xls">
               </div>
-              <button type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">Xử lý</button>
+              <button v-if="!state.pending" type="submit" class="btn btn-sm btn-primary" id="js-upload-submit">Xử
+                lý</button>
             </div>
           </form>
 
@@ -72,7 +73,8 @@
               </div>
             </div>
 
-            <div class="alert alert-info" v-if="!!state.pending">Đang xử lý: {{state.pending}}..</div>
+            <div class="alert alert-info" v-if="!!state.pending">Đang xử lý
+              ({{state.success.length+state.error.length}}/{{state.total}}): {{state.pending}}..</div>
 
             <!-- Upload Finished -->
             <div class="js-upload-finished">
@@ -138,6 +140,7 @@
       },
       methods: {
         async startProcess(files) {
+          if (this.state.pending) return alert('Đang xử lý, vui lòng đợi!')
           const filteredFiles = []
           for (let i = 0; i < files.length; i++) {
             const file = files[i]
