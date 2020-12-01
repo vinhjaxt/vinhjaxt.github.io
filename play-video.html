@@ -1,5 +1,5 @@
 <html>
-
+<title>Play video</title>
 <body>
   <video id="video" width="100%" muted playsinline controls autoplay style="height: calc(100vh - 60px);">
     <source src="" type="video/mp4">Your browser
@@ -11,8 +11,11 @@
     if (search.get('src')) video.setAttribute('src', search.get('src'))
     video.play()
     const caption = document.querySelector('#caption')
-    if (search.get('caption')) caption.textContent = search.get('caption')
-    else caption.textContent = 'Playing: ' + search.get('src')
+    if (search.get('caption')) {
+      document.title = caption.textContent = search.get('caption')
+    } else {
+      document.title = caption.textContent = 'Video: ' + search.get('src')
+    }
   </script>
 </body>
 
